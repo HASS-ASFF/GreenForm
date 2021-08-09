@@ -4,59 +4,53 @@
 <html lang="en">
   <head>
     <meta name="description" content="Dashboard of application Green-form">
-    <title>GREEN FORM</title>
+
+    {% block 'title' %}<title>GREEN FORM | Acceuil</title>{% endblock  %} 
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{% static 'img/green-energy.png' %}" />
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %} ">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
+  <style>
+    .app-header{
+      background-color : #184D47;
+    }
 
+    .app-header__logo{
+      background-color : #003333;
+      display : flex;
+      align-items : center;
+      justify-content : center;
+    }
+    .app-header__logo-img{
+      margin-bottom : 5px;
+    }
+    .app-sidebar{
+      background-color : #1A1C20;
+    }
+    .text-logo{
+      margin-right : 20px;
+    }
+  </style>
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="index.html">Green-form</a>
+    <header class="app-header">
+    <a class="app-header__logo" href="{% url 'home' %}">
+    <div class="app-header__logo-img" ><img style="width:50%;height:auto;" src="{% static 'img/green-energy.png' %}" /></div><div class="text-logo">Green-form</div></a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
-        <li class="app-search">
-          <input class="app-search__input" type="search" placeholder="Search">
-          <button class="app-search__button"><i class="fa fa-search"></i></button>
-        </li>
-
         <!--Notification Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
           <ul class="app-notification dropdown-menu dropdown-menu-right">
             <li class="app-notification__title">You have 4 new notifications.</li>
             <div class="app-notification__content">
-              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
-                  <div>
-                    <p class="app-notification__message">Lisa sent you a mail</p>
-                    <p class="app-notification__meta">2 min ago</p>
-                  </div></a></li>
-              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
-                  <div>
-                    <p class="app-notification__message">Mail server not working</p>
-                    <p class="app-notification__meta">5 min ago</p>
-                  </div></a></li>
-              <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
-                  <div>
-                    <p class="app-notification__message">Transaction complete</p>
-                    <p class="app-notification__meta">2 days ago</p>
-                  </div></a></li>
-              <div class="app-notification__content">
-                <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-primary"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></span>
-                    <div>
-                      <p class="app-notification__message">Lisa sent you a mail</p>
-                      <p class="app-notification__meta">2 min ago</p>
-                    </div></a></li>
-                <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-danger"></i><i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i></span></span>
-                    <div>
-                      <p class="app-notification__message">Mail server not working</p>
-                      <p class="app-notification__meta">5 min ago</p>
-                    </div></a></li>
                 <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
                     <div>
                       <p class="app-notification__message">Transaction complete</p>
@@ -85,31 +79,28 @@
     <aside class="app-sidebar">
       <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% static 'img/default.jpg' %}" alt="User Image">
         <div>
-          <p class="app-sidebar__user-name">John Doe</p>
-          <p class="app-sidebar__user-designation">Membre Adhérant</p>
+          <p class="app-sidebar__user-name">Chekhche Ali</p>
+          <p class="app-sidebar__user-designation">Administrateur</p>
         </div>
       </div>
       <ul class="app-menu">
         <li><a class="app-menu__item active" href="{% url 'home' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Tableau de bord</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Mon Association</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="{% url 'memberslist' %}"><i class="fa fa-address-card" aria-hidden="true"></i> Listes des membres</a></li>
-            <li><a class="treeview-item" href="#"><i class="fa fa-comments" aria-hidden="true"></i>Mes messages</a></li>
-            <li><a class="treeview-item" href="{% url 'payment' %}"><i class="fa fa-credit-card" aria-hidden="true"></i>Mes paiements</a></li>
-            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>Mon abonnement</a></li>
-            <li><a class="treeview-item" href="{% url 'qrcode' %}"><i class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
+            <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i> Liste des membres</a></li>
+            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
+            <li><a class="treeview-item" href="{% url 'qrcode' %}"><i style="padding-right:10px;" class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="{% url 'activities' %}"><i class="icon fa fa-circle-o"></i>Mes activités</a></li>
-            <li><a class="treeview-item" href="{% url 'activitylist' %}"><i class="icon fa fa-circle-o"></i>Listes d'activités</a></li>
+            <li><a class="treeview-item" href="{% url 'activitylist' %}"><i style="padding-right:10px;" class="fa fa-calendar" aria-hidden="true"></i>Listes d'activités</a></li>
           </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i style="padding-right:10px;" class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>Carte de visualisation</a></li>
-            <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i>Liste des établissements</a></li>
+            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-map" aria-hidden="true"></i>Carte de visualisation</a></li>
+            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-university" aria-hidden="true"></i>Liste des établissements</a></li>
           </ul>
         </li>
         
