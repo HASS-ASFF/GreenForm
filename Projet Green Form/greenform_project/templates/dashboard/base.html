@@ -5,7 +5,7 @@
   <head>
     <meta name="description" content="Dashboard of application Green-form">
 
-    {% block 'title' %}<title>GREEN FORM | Acceuil</title>{% endblock  %} 
+    {% block 'title' %}<title>Forma Green | Acceuil</title>{% endblock  %} 
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,9 +14,11 @@
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %} ">
     <!-- Font-icon css-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css" integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous"/>
   </head>
-  <body>
+  <body class="app sidebar-mini rtl">
   <style>
     .app-header{
       background-color : #184D47;
@@ -41,7 +43,7 @@
     <!-- Navbar-->
     <header class="app-header">
     <a class="app-header__logo" href="{% url 'home' %}">
-    <div class="app-header__logo-img" ><img style="width:50%;height:auto;" src="{% static 'img/green-energy.png' %}" /></div><div class="text-logo">Green-form</div></a>
+    <div class="app-header__logo-img" ><img style="width:50%;height:auto;" src="{% static 'img/green-energy.png' %}" /></div><div class="text-logo">Forma Green</div></a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       
       <!-- Navbar Right Menu-->
@@ -87,9 +89,9 @@
         <li><a class="app-menu__item active" href="{% url 'home' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Tableau de bord</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Mon Association</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i> Liste des membres</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
-            <li><a class="treeview-item" href="{% url 'qrcode' %}"><i style="padding-right:10px;" class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
+            <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
+            <li><a class="treeview-item" href="{% url 'abonnementList' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
+            <li><a class="treeview-item" href="{% url 'qrcode' %}"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -97,10 +99,15 @@
             <li><a class="treeview-item" href="{% url 'activitylist' %}"><i style="padding-right:10px;" class="fa fa-calendar" aria-hidden="true"></i>Listes d'activités</a></li>
           </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i style="padding-right:10px;" class="app-menu__icon fa fa-th-list"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-handshake"></i><span class="app-menu__label">Partenaires</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-map" aria-hidden="true"></i>Carte de visualisation</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-university" aria-hidden="true"></i>Liste des établissements</a></li>
+            <li><a class="treeview-item" href="{% url 'partnersList' %}"><i style="padding-right:10px;" class="fa fa-list" aria-hidden="true"></i>Listes des partenaires</a></li>
+          </ul>
+        </li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i style="padding-right:10px;" class="app-menu__icon fa fa-tree"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a class="treeview-item" href="{% url 'mapVisualization' %}"><i style="padding-right:10px;" class="fa fa-map" aria-hidden="true"></i>Carte de visualisation</a></li>
+            <li><a class="treeview-item" href="{% url 'etablissementList' %}"><i style="padding-right:10px;" class="fa fa-university" aria-hidden="true"></i>Liste des établissements</a></li>
           </ul>
         </li>
         

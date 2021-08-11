@@ -16,6 +16,33 @@ def memberslist(request):
      #code here
      return render(request,'dashboard/memberlist.html')
 
+def abonnementList(request):
+    #code here
+    return render(request, 'dashboard/abonnementList.html')
+
+def partnersList(request):
+    #code here
+    return render(request, 'dashboard/partnersList.html')
+
+def mapVisualization(request):
+    #code here
+    return render(request, 'dashboard/mapVisualization.html')
+
+
+#---------------------Login and Register view 
+
+
+
+def loginRegister(request):
+    #code here
+    return render(request, 'login_register/login_register.html')
+
+
+def etablissementList(request):
+    #code here
+    return render(request, 'dashboard/etablissementList.html')
+
+
 #-------------------Member views 
 
 def personnal_profil(request):
