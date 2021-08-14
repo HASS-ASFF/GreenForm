@@ -1,9 +1,101 @@
 {% extends 'dashboard/base.html' %}
 
 {% block 'content' %}
-
+{% load static %}
+<style>
+    .btn,button{
+        border-radius: 20px;
+        color: #469612;
+        cursor: pointer;
+        background-color: white;
+        text-decoration: none !important;
+    }
+</style>
 <main class="app-content">
-    <p>Member list here</p>
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-address-card"></i>
+                Liste des Membres
+            </h1>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+       
+        <div class="col-md-12">
+              <div class="tile">
+              <div class="tile-title">
+                <h4 style="color: #222d32;">Personnes</h4>
+                <button class="btn show-form" data-url="{% url 'addpersonne' %}" >Ajouter</button>
+                <button class="btn">Exporter</button>
+              </div>
+                  <div class="table-responsive">
+                            <table class="table" id="pers-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Prenom</th>
+                                        <th>Sexe</th>
+                                        
+                                    
+                                        <th style="color: #469612;">Modifier</th>
+                                        <th style="color: #469612;">Supprimer</th>
+                                                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% include 'dashboard/membres/personne/persitems.html' %}
+                                </tbody>
+                            </table>
+                        </div>
+                                
+                </div>        
+            
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12">
+            <div class="tile">
+            <div class="tile-title">
+                <h4 style="color: #222d32;">Centre de formation</h4>  
+              <button class="btn show-form" data-url="{% url 'addcentre' %}" >Ajouter</button>
+              <button class="btn">Exporter</button>
+            </div>
+                <div class="table-responsive">
+                          <table class="table" id="pers-table">
+                              <thead>
+                                  <tr>
+                                      <th>Responsable</th>
+                                      <th>Nom</th>
+                                      <th>Code postal</th>
+                                      
+                                  
+                                      <th style="color: #469612;">Modifier</th>
+                                      <th style="color: #469612;">Supprimer</th>
+                                                          
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                {% include 'dashboard/membres/centre/centreitems.html' %}
+                              </tbody>
+                          </table>
+                      </div>
+                              
+              </div>        
+          
+      </div>
+        
 </main>
+
+<div class="modal fade" id="modal-centr">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-pers">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
 
 {% endblock  %}

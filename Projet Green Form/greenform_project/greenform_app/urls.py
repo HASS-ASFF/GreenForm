@@ -3,9 +3,18 @@ from .views import *
 
 urlpatterns = [
     path('',home,name='home'),
+
     path('activities-list/',activitylist,name='activitylist'),
+    path('activities-add',addactivity,name='addactivity'),
+    path('activities-modify/<str:modify_id>',modifyactivity,name='modifyactivity'),
+    path('activities-delete/<str:delete_id>',deleteactivity,name='deleteactivity'),
+
     path('members-list/',memberslist,name='memberslist'),
+    path('personne-add',addpersonne,name='addpersonne'),
+    path('centre-add',addcentre,name='addcentre'),
+
     path('abonnements-list/',abonnementList,name='abonnementList'),
+    path('qr-code-search/',qrcode_search,name='qrcodesearch'),
     path('partenaires/',partnersList,name='partnersList'),
     path('map-vizualisation/',mapVisualization,name='mapVisualization'),
     path('etablissements-list/',etablissementList,name='etablissementList'),

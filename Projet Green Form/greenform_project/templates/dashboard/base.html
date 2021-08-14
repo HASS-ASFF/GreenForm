@@ -12,7 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="{% static 'img/green-energy.png' %}" />
     <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %} ">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %} " />
+    <link el="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %} " />
     <!-- Font-icon css-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,26 +21,46 @@
   </head>
   <body class="app sidebar-mini rtl">
   <style>
-    .app-header{
-      background-color : #184D47;
+
+    .app-header {
+      background-color: #469612 !important;
+      height : 50px !important;
+    }
+
+    .app-header__logo {
+      background-color: #fff !important;
+      color: #469612 !important;
+      text-align: left !important;
+
+    }
+
+    .app-header__logo-img {
+      bottom: 8px !important;
+      position: relative !important;
+      
+    }
+
+    .text-logo{
+      margin-right: 0px !important;
+      position: relative;
+      right: 24px !important;
     }
 
     .app-header__logo{
-      background-color : #003333;
       display : flex;
       align-items : center;
       justify-content : center;
     }
+
     .app-header__logo-img{
       margin-bottom : 5px;
     }
-    .app-sidebar{
-      background-color : #1A1C20;
-    }
+
     .text-logo{
       margin-right : 20px;
     }
   </style>
+  
     <!-- Navbar-->
     <header class="app-header">
     <a class="app-header__logo" href="{% url 'home' %}">
@@ -91,7 +112,7 @@
           <ul class="treeview-menu">
             <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
             <li><a class="treeview-item" href="{% url 'abonnementList' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
-            <li><a class="treeview-item" href="{% url 'qrcode' %}"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
+            <li><a class="treeview-item" href="{% url 'qrcodesearch' %}"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Qr code</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -124,10 +145,49 @@
     <script src="{% static 'js/jquery-3.2.1.min.js' %} "></script>
     <script src="{% static 'js/popper.min.js' %} "></script>
     <script src="{% static 'js/bootstrap.min.js' %} "></script>
-    <script src="{% static 'js/main.js' %} "></script>
+
+  <!-- modal show & save form -->  
+    <script src="{% static 'js/membre.js' %}"></script>
+    <script src="{% static 'js/activity.js' %}"></script>
+    <script src="{% static 'js/etablissement.js' %}"></script>
+    <script src="{% static 'js/partenaire.js' %}"></script>
+    <script src="{% static 'js/abonnement.js' %}"></script>
+    
+    
+    
+    <script>
+        (function () {
+      "use strict";
+
+      var treeviewMenu = $('.app-menu');
+
+      // Toggle Sidebar
+      $('[data-toggle="sidebar"]').click(function(event) {
+        event.preventDefault();
+        $('.app').toggleClass('sidenav-toggled')
+        $(".app-sidebar__user-avatar").toggle()
+      });
+
+      // Activate sidebar treeview toggle
+      $("[data-toggle='treeview']").click(function(event) {
+        event.preventDefault();
+        if(!$(this).parent().hasClass('is-expanded')) {
+          treeviewMenu.find("[data-toggle='treeview']").parent().removeClass('is-expanded');
+        } 
+        $(this).parent().toggleClass('is-expanded');
+      });
+
+      // Set initial active toggle
+      $("[data-toggle='treeview'].is-expanded").parent().toggleClass('is-expanded');
+
+      //Activate bootstrip tooltips
+      $("[data-toggle='tooltip']").tooltip();
+      // $(".app-sidebar")
+
+    })();
+
+    </script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="{% static 'js/plugins/pace.min.js' %} "></script>
-    <!-- Page specific javascripts-->
-    <script type="text/javascript" src="{% static 'js/plugins/chart.js' %} "></script>
   </body>
   </html>
