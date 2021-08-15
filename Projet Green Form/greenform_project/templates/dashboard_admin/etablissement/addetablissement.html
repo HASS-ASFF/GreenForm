@@ -1,9 +1,9 @@
 
 {% load crispy_forms_tags %}
-<form method="POST" data-url="{% url 'addcentre' %}" class="create-form">
+<form method="POST" data-url="{% url 'addetablissement' %}" class="create-form">
     {% csrf_token %}
     <div class="modal-header">
-       <h5 class="modal-title">Ajouter un Centre</h5>
+       <h5 class="modal-title">Ajouter un Etablissement</h5>
        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
        <span aria-hidden="true">&times;</span>
        </button>

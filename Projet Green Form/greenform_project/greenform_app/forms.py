@@ -40,3 +40,8 @@ class PartenaireForm(ModelForm):
     class Meta:
         model = Partenaire
         fields = '__all__'
+
+class EtablissementForm(ModelForm):
+    class Meta:
+        model = Etablissement
+        fields = '__all__'

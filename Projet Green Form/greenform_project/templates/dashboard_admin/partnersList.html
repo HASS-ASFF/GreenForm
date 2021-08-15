@@ -1,9 +1,10 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'dashboard_admin/base.html' %}
 
 {% block 'content' %}
 {% load static %}
+
 <style>
-    .btn,button{
+   .btn,button{
         border-radius: 20px;
         color: #469612;
         cursor: pointer;
@@ -17,8 +18,8 @@
     <div class="app-title">
         <div>
             <h1>
-                <i class="fa fa-calendar"></i>
-                Liste des Activités
+                <i class="fa fa-handshake"></i>
+                Liste des Partenaires
             </h1>
         </div>
     </div>
@@ -27,17 +28,17 @@
         <div class="col-md-12">
               <div class="tile">
               <div class="tile-title">
-                <button class="btn show-form" data-url="{% url 'addactivity' %}" >Ajouter</button>
+                <button class="btn show-form" data-url="{% url 'addpartenaire' %}" >Ajouter</button>
                 <button class="btn">Exporter</button>
               </div>
                   <div class="table-responsive">
-                            <table class="table" id="act-table">
+                            <table class="table" id="part-table">
                                 <thead>
                                     <tr>
                                         <th>Nom</th>
-                                        <th>Description</th>
-                                        <th>Date</th>
-                                        
+                                        <th>Adresse</th>
+                                        <th>Code postal</th>
+                                        <th>Numéro Tel</th>
                                     
                                         <th style="color: #469612;">Modifier</th>
                                         <th style="color: #469612;">Supprimer</th>
@@ -45,7 +46,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   {% include 'dashboard/activities/activityitems.html' %}
+                                    {% include 'dashboard_admin/partenaires/partitems.html' %}
                                 </tbody>
                             </table>
                     </div>        
@@ -55,7 +56,7 @@
 
 </main>
 
-<div class="modal fade" id="modal-act">
+<div class="modal fade" id="modal-part">
     <div class="modal-dialog">
         <div class="modal-content"></div>
     </div>

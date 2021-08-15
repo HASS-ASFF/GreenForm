@@ -1,0 +1,129 @@
+{% extends 'dashboard_admin/base.html' %}
+
+{% block 'content' %}
+<style>
+    .btn{
+        border-radius: 20px;
+        border:1px solid #469612;
+        color: #469612;
+        cursor: pointer;
+        background-color: white;
+        text-decoration: none !important;
+    }
+</style>
+
+<main class="app-content">
+    <div style="margin-bottom: 50px;" class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-qrcode"></i>
+                Qr-Code
+            </h1>
+        </div>
+    </div>
+    <div style="padding: 50px;" class="tile">
+        <div class="tile-body">
+            <h4>Rechercher un Membre</h4>
+            <form style="display: block;" action="{% url 'qrcodesearch' %}" class='form-inline' method="">
+                <div class="input-group">
+                  <input name="query" type='text' id='search' class="form-control search-form" placeholder="rechercher un membre...">
+                  <span class="input-group-btn" style="width:39px">
+                    <button id="search-this"type="button" class="pull-right btn btn-default search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
+        </div>
+    </div>
+
+    <div class="tile">
+        <div class="tile-body">
+            {% if personne|length_is:"0" %}
+            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour personne <strong style="color:#469612;">personne</strong></p>
+
+             {% else %}
+             <div class="tile-title">
+                <h4>Personne disponible</h4>
+             </div>   
+            <div class="table-responsive">
+                            <table class="table" id="qrpers-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Prenom</th>
+                                        <th>Type</th>
+                                        <th></th>
+                                        
+                                                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   {% for p in personne %}
+                                    <tr>
+                                        <th>{{p.nom}}</th>
+                                        <th>{{p.prenom}}</th>
+                                        <th>{{p.type}}</th>
+                                        <th>
+                                            <button style="border-radius: 25px;" class="btn  show-img-qrpers" data-url="{% url 'qrcodeinfo' id_membre=p.id type='personne' %}">
+                                                Afficher Qr code
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>        
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="tile">
+        <div class="tile-body">
+            {% if centre|length_is:"0" %}
+            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour centre de formation <strong style="color:#469612;">Centre de formation</strong></p>
+
+             {% else %}
+             <div class="tile-title">
+                <h4>Centre disponible</h4>
+             </div>   
+            <div class="table-responsive">
+                            <table class="table" id="qrcentr-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Responsable</th>
+                                        <th>Code postal</th>
+                                        <th></th>
+                                                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   {% for c in centre %}
+                                    <tr>
+                                        <th>{{c.nom_du_centre}}</th>
+                                        <th>{{c.responsable}}</th>
+                                        <th>{{c.code_postal}}</th>
+                                        <th>
+                                            <button style="border-radius: 25px;" class="btn  show-img-qrcentr" data-url="{% url 'qrcodeinfo' id_membre=c.id  type='centre' %}">
+                                                Afficher Qr code
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>        
+            {% endif %}
+        </div>
+    </div>
+    
+</main>
+
+<div class="modal fade" id="modal-qrcode">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+{% endblock  %}

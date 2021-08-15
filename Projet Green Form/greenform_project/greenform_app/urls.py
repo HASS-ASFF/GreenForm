@@ -14,14 +14,27 @@ urlpatterns = [
     path('centre-add',addcentre,name='addcentre'),
 
     path('abonnements-list/',abonnementList,name='abonnementList'),
-    path('qr-code-search/',qrcode_search,name='qrcodesearch'),
+    
+
     path('partenaires/',partnersList,name='partnersList'),
+    path('partenaires-add',addpartenaire,name='addpartenaire'),
+    path('partenaires-modify/<str:modify_id>',modifypartenaire,name='modifypartenaire'),
+    path('partenaires-delete/<str:delete_id>',deletepartenaire,name='deletepartenaire'),
+
     path('map-vizualisation/',mapVisualization,name='mapVisualization'),
+
     path('etablissements-list/',etablissementList,name='etablissementList'),
+    path('etablissement-add',addetablissement,name='addetablissement'),
+    path('etablissement-modify/<str:modify_id>',modifyetablissement,name='modifyetablissement'),
+    path('etablissement-delete/<str:delete_id>',deleteetablissement,name='deleteetablissement'),
+
     path('profil/',personnal_profil,name='profil'),
     path('activities-list/',activity_show,name='activities'),
     path('payment/',payment_info,name='payment'),
-    path('qr-code/',qrcode_info,name='qrcode'),
+
+    path('qr-code-search/',Search_qrcode,name='qrcodesearch'),
+    path('qr-code/<str:id_membre>/<str:type>',qrcode_info,name='qrcodeinfo'),
+
     path('login-register/',loginRegister,name='loginRegister'),
     
 ]

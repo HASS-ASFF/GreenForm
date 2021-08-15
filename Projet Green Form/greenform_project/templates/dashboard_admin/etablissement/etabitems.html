@@ -7,10 +7,10 @@
         <td>{{ e.type_etablissement }}</td>
         
 
-        <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="#">
+        <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="{% url 'modifyetablissement' modify_id=e.id %}">
            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit" ></i>
         </button></td>
-        <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
+        <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="{% url 'deleteetablissement' delete_id=e.id %}">
            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
         </button></td>
 </tr>

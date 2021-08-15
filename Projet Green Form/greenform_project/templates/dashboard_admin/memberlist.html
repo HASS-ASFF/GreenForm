@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'dashboard_admin/base.html' %}
 
 {% block 'content' %}
 {% load static %}
@@ -26,7 +26,7 @@
               <div class="tile">
               <div class="tile-title">
                 <h4 style="color: #222d32;">Personnes</h4>
-                <button class="btn show-form" data-url="{% url 'addpersonne' %}" >Ajouter</button>
+                <button class="btn show-form-pers" data-url="{% url 'addpersonne' %}" >Ajouter</button>
                 <button class="btn">Exporter</button>
               </div>
                   <div class="table-responsive">
@@ -44,7 +44,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% include 'dashboard/membres/personne/persitems.html' %}
+                                    {% include 'dashboard_admin/membres/personne/persitems.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -57,7 +57,7 @@
             <div class="tile">
             <div class="tile-title">
                 <h4 style="color: #222d32;">Centre de formation</h4>  
-              <button class="btn show-form" data-url="{% url 'addcentre' %}" >Ajouter</button>
+              <button class="btn show-form-centre" data-url="{% url 'addcentre' %}" >Ajouter</button>
               <button class="btn">Exporter</button>
             </div>
                 <div class="table-responsive">
@@ -75,7 +75,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                {% include 'dashboard/membres/centre/centreitems.html' %}
+                                {% include 'dashboard_admin/membres/centre/centreitems.html' %}
                               </tbody>
                           </table>
                       </div>
@@ -86,13 +86,7 @@
         
 </main>
 
-<div class="modal fade" id="modal-centr">
-    <div class="modal-dialog">
-        <div class="modal-content"></div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal-pers">
+<div class="modal fade" id="modal-membre">
     <div class="modal-dialog">
         <div class="modal-content"></div>
     </div>

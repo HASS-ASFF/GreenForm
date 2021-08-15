@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'dashboard_admin/base.html' %}
 
 {% block 'content' %}
 {% load static %}
@@ -17,26 +17,28 @@
     <div class="app-title">
         <div>
             <h1>
-                <i class="fa fa-credit-card-alt"></i>
-                Liste des Abonnements
+                <i class="fa fa-university"></i>
+                Liste des Etablissements
             </h1>
         </div>
     </div>
     <div class="clearfix"></div>
        
         <div class="col-md-12">
-            <div class="tile">
+              <div class="tile">
               <div class="tile-title">
-                <button class="btn show-form" data-url="#">Ajouter</button>
+                <button class="btn show-form" data-url="{% url 'addetablissement' %}" >Ajouter</button>
                 <button class="btn">Exporter</button>
               </div>
                   <div class="table-responsive">
-                            <table class="table" id="abo-table">
+                            <table class="table" id="etab-table">
                                 <thead>
                                     <tr>
-                                        <th>Membre</th>
-                                        <th>Numéro abonnement</th>
-                                        <th>Date abonnement</th>
+                                        <th>Nom</th>
+                                        <th>Representant</th>
+                                        <th>Adresse</th>
+                                        <th>Code postal</th>
+                                        <th>Type</th>
                                         
                                     
                                         <th style="color: #469612;">Modifier</th>
@@ -45,7 +47,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% include 'dashboard/abonnements/aboitems.html' %}
+                                    {% include 'dashboard_admin/etablissement/etabitems.html' %}
                                 </tbody>
                             </table>
                     </div>        
@@ -55,7 +57,7 @@
 
 </main>
 
-<div class="modal fade" id="modal-abo">
+<div class="modal fade" id="modal-etab">
     <div class="modal-dialog">
         <div class="modal-content"></div>
     </div>

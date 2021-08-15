@@ -69,7 +69,7 @@ class Personne(Membre):
         db_table = 'Personne lambda'
     
     def save(self,*args,**kwargs):
-        qrcode_img = qrcode.make("Information Membre:\n\n"+"Nom: "+self.nom+"\nPrenom: "+self.prenom+"\nSexe: "+self.sexe
+        qrcode_img = qrcode.make("Membre Forma-Green:\n\n"+"Nom: "+self.nom+"\nPrenom: "+self.prenom+"\nSexe: "+self.sexe
         +"\nAdresse: "+self.adresse+"\nCode Postal: "+str(self.code_postal)+"\nNumero de téléphone: "+self.num_tel
         +"\nType de membre: "+self.type)
         canvas = Image.new('RGB',(qrcode_img.pixel_size, qrcode_img.pixel_size),'white')
@@ -92,6 +92,18 @@ class Centre_formation(Membre):
 
     class Meta:
         db_table = 'Centre de formation'
+
+    def save(self,*args,**kwargs):
+        qrcode_img = qrcode.make("Membre Forma-Green:\n\n"+"Nom du centre: "+self.nom_du_centre+"\nResponsable: "+self.responsable+"\nCode postal: "+str(self.code_postal))
+        canvas = Image.new('RGB',(qrcode_img.pixel_size, qrcode_img.pixel_size),'white')
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.nom_du_centre}'+'.png'
+        buffer = BytesIO()
+        canvas.save(buffer,'PNG')
+        self.qr_code.save(fname,File(buffer),save=False)
+        canvas.close()
+        super().save(*args, **kwargs)
 
 
 
