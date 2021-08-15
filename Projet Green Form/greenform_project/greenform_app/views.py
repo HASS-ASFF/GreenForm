@@ -9,9 +9,17 @@ from .forms import *
 
 #-------------------Dashboard Admin views---------------------------------------------------------------------
 
-def home(request):
+def home_admin(request):
     #code here
     return render(request,'dashboard_admin/index.html')
+
+def profil_admin(request):
+    #code here
+    return render(request,'dashboard_admin/profil.html')
+
+def setting_admin(request):
+    #code here
+    return render(request,'dashboard_admin/setting.html')
 
 #----------------------------------------ACTIVITY------------------------------------------------------
 def activitylist(request):
@@ -192,11 +200,6 @@ def mapVisualization(request):
     #code here
     return render(request, 'dashboard_admin/mapVisualization.html')
 
-#----------------------------------------QRCODE------------------------------------------------------------
-def qrcode_search(request):
-    #code here
-    return render(request,'dashboard_admin/rechercheqrcode.html')   
-
 
 #---------------------Login and Register view -------------------------------------------------------------
 
@@ -265,17 +268,20 @@ def deleteetablissement(request,delete_id):
 
 #------------------- Dashboard Member views ----------------------------------------------------------------------------
 
-def personnal_profil(request):
-    #code here
-    return render(request,'dashboard_membre/profil.html')
+
+def home_membre(request):
+	return render(request,'dashboard_membre/index.html')
 
 def activity_show(request):
     #code here
-    return render(request,'dashboard_membre/activity.html')
+    return render(request,'dashboard_membre/activitydetail.html')
 
-def payment_info(request):
+def badge_qrcode(request):
     #code here
-    return render(request,'dashboard_membre/payment.html')
+    return render(request,'dashboard_membre/badge.html')
+
+
+#----------------------------------------QRCODE------------------------------------------------------------
 
 def Search_qrcode(request):
 	query = request.GET.get('query')

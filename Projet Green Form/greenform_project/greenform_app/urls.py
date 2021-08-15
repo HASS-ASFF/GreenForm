@@ -2,7 +2,10 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('',home,name='home'),
+    #-------------------- ADMIN DAHSBOARD
+    path('',home_admin,name='home_admin'),
+    path('profil/',profil_admin,name='profil'),
+    path('setting/',setting_admin,name='setting'),
 
     path('activities-list/',activitylist,name='activitylist'),
     path('activities-add',addactivity,name='addactivity'),
@@ -28,13 +31,16 @@ urlpatterns = [
     path('etablissement-modify/<str:modify_id>',modifyetablissement,name='modifyetablissement'),
     path('etablissement-delete/<str:delete_id>',deleteetablissement,name='deleteetablissement'),
 
-    path('profil/',personnal_profil,name='profil'),
+    
     path('activities-list/',activity_show,name='activities'),
-    path('payment/',payment_info,name='payment'),
+    
 
     path('qr-code-search/',Search_qrcode,name='qrcodesearch'),
     path('qr-code/<str:id_membre>/<str:type>',qrcode_info,name='qrcodeinfo'),
 
     path('login-register/',loginRegister,name='loginRegister'),
-    
+
+    #-------------------- MEMBRE DAHSBOARD
+    path('index/',home_membre,name='home_membre'),
+    path('badge-membre/',badge_qrcode,name='badge'),
 ]
