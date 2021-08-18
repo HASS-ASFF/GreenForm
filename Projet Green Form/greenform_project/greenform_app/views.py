@@ -1,8 +1,8 @@
-from django.db.models.query import prefetch_related_objects
-from django.http import request
 from django.shortcuts import render,get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.views.generic import ListView
+import json
 from .models import *
 from .forms import *
 
@@ -283,8 +283,19 @@ def badge_qrcode(request):
 
 #----------------------------------------QRCODE------------------------------------------------------------
 
+""" class QrcodePersonneListView(ListView):
+	model = Personne
+	template_name = "dashboard_admin/rechercheqrcode.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["qs_json"] = json.dumps(list(Personne.objects.values()))
+		return context """
+
 def Search_qrcode(request):
 	query = request.GET.get('query')
+	#value = request.GET.get('value')
+	#print(value)
 	if not query:
 		personnes = Personne.objects.all()
 		centre = Centre_formation.objects.all()
@@ -300,7 +311,7 @@ def Search_qrcode(request):
 		'query':query,
 	}
 	return render(request,'dashboard_admin/rechercheqrcode.html',context)
-	
+	 
 
 def qrcode_info(request,id_membre,type):
 	data = dict()

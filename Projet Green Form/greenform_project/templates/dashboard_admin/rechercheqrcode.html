@@ -1,6 +1,8 @@
 {% extends 'dashboard_admin/base.html' %}
 
 {% block 'content' %}
+{% load static %}
+
 <style>
     .btn{
         border-radius: 20px;
@@ -24,24 +26,32 @@
     <div style="padding: 50px;" class="tile">
         <div class="tile-body">
             <h4>Rechercher un Membre</h4>
-            <form style="display: block;" action="{% url 'qrcodesearch' %}" class='form-inline' method="">
+            <form style="display: block;" action="{% url 'qrcodesearch' %}" class='form-inline' id="myform">
                 <div class="input-group">
                   <input name="query" type='text' id='search' class="form-control search-form" placeholder="rechercher un membre...">
                   <span class="input-group-btn" style="width:39px">
-                    <button id="search-this"type="button" class="pull-right btn btn-default search-btn">
+                    <button id="search-this" type="submit" class="pull-right btn btn-default search-btn">
                         <i class="fa fa-search"></i>
                     </button>
                   </span>
                 </div>
+                <div style="margin-top: 20px;" class="form-group col-md-6">
+                <label style="padding-right: 5px;" for="inputState">Type de membre </label>
+                    <select  id="inputState" class="form-control">
+                        <option value="none" selected >Tous</option>
+                        <option  value="personne">Personne</option>
+                        <option  value="centre">Centre de formation</option>
+                    </select>
+                </div>    
               </form>
         </div>
     </div>
 
-    <div class="tile">
+    <div class="tile" id="personne">
         <div class="tile-body">
+         
             {% if personne|length_is:"0" %}
-            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour personne <strong style="color:#469612;">personne</strong></p>
-
+            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour centre de formation <strong style="color:#469612;">Centre de formation</strong></p>
              {% else %}
              <div class="tile-title">
                 <h4>Personne disponible</h4>
@@ -58,17 +68,17 @@
                                                             
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="body-info"> 
                                    {% for p in personne %}
                                     <tr>
-                                        <th>{{p.nom}}</th>
-                                        <th>{{p.prenom}}</th>
-                                        <th>{{p.type}}</th>
-                                        <th>
+                                        <td>{{p.nom}}</td>
+                                        <td>{{p.prenom}}</td>
+                                        <td>{{p.type}}</td>
+                                        <td>
                                             <button style="border-radius: 25px;" class="btn  show-img-qrpers" data-url="{% url 'qrcodeinfo' id_membre=p.id type='personne' %}">
                                                 Afficher Qr code
                                             </button>
-                                        </th>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -78,7 +88,7 @@
         </div>
     </div>
 
-    <div class="tile">
+    <div class="tile" id="centre">
         <div class="tile-body">
             {% if centre|length_is:"0" %}
             <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour centre de formation <strong style="color:#469612;">Centre de formation</strong></p>
@@ -99,18 +109,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   {% for c in centre %}
+                                   
+                                    {% for c in centre %}
                                     <tr>
-                                        <th>{{c.nom_du_centre}}</th>
-                                        <th>{{c.responsable}}</th>
-                                        <th>{{c.code_postal}}</th>
-                                        <th>
-                                            <button style="border-radius: 25px;" class="btn  show-img-qrcentr" data-url="{% url 'qrcodeinfo' id_membre=c.id  type='centre' %}">
+                                        <td>{{c.nom_du_centre}}</td>
+                                        <td>{{c.responsable}}</td>
+                                        <td>{{c.code_postal}}</td>
+                                        <td>
+                                            <button style="border-radius: 25px;" class="btn  show-img-qrpers" data-url="{% url 'qrcodeinfo' id_membre=c.id type='centre' %}">
                                                 Afficher Qr code
                                             </button>
-                                        </th>
+                                        </td>
                                     </tr>
                                     {% endfor %}
+                                   
                                 </tbody>
                             </table>
                     </div>        
@@ -125,5 +137,74 @@
         <div class="modal-content"></div>
     </div>
 </div>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %} "></script>
+<script>
+$(document).ready(function(){
+
+    localStorage.setItem('option','none');
+
+   $("#inputState").change(function(){
+        var val = $('#inputState option:selected').val();
+
+        localStorage.setItem('option',val);
+
+        if(val == "personne"){
+            $("#centre").hide();
+            $("#personne").show();
+        }
+
+        else if(val == "centre"){
+            $("#personne").hide();
+            $("#centre").show();
+        }
+
+        else{
+            $("#personne").show();
+            $("#centre").show();
+        }
+   });
+
+    if(localStorage.getItem('option') == "personne"){
+        $("#centre").hide();
+    }
+    else if(localStorage.getItem('option') == "centre"){
+        $("#personne").hide();
+    }
+   
+
+});
+
+{% comment %} const data = '{{qs_json}}'
+
+const rdata = JSON.parse(data.replace(/&quot;/g,'"'))
+console.log(rdata);
+
+const input = document.getElementById('search');
+let filteredArr = [];
+input.addEventListener('keyup',(e)=>{
+    var table = document.getElementById('body-info');
+    table.innerHTML = "";
+    filteredArr = rdata.filter(info => info['nom'].includes(e.target.value));
+    console.log(filteredArr);
+    if(filteredArr.length > 0){
+        filteredArr.map(item=>{
+            table.innerHTML += `<tr>
+                                    <td>${item['nom']}</td>
+                                    <td>${item['prenom']}</td>
+                                    <td>${item['type']}</td>
+                                    <td>
+                                        <button style="border-radius: 25px;" class="btn  show-img-qrpers" data-url="#">
+                                                Afficher Qr code
+                                            </button>
+                                    </td>
+                                </tr>`
+        })
+    }
+    else{
+        table.innerHTML = `<strong style="text-align:center;">Aucun Résultat trouvé !</strong>`
+    }
+}); {% endcomment %}
+</script>
 
 {% endblock  %}

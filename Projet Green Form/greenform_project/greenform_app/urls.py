@@ -2,6 +2,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    
     #-------------------- ADMIN DAHSBOARD
     path('',home_admin,name='home_admin'),
     path('profil/',profil_admin,name='profil'),
@@ -36,6 +37,7 @@ urlpatterns = [
     
 
     path('qr-code-search/',Search_qrcode,name='qrcodesearch'),
+    #path('qr-code-search/',QrcodePersonneListView.as_view(),name='qrcodesearch'),
     path('qr-code/<str:id_membre>/<str:type>',qrcode_info,name='qrcodeinfo'),
 
     path('login-register/',loginRegister,name='loginRegister'),
