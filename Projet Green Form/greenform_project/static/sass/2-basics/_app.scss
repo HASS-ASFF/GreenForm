@@ -18,10 +18,12 @@
 	// On small devices make sidebar collapsed by default
 	// adding sidenav-toggled class will open sidebar
 	@media(max-width: 767px) {
+
 		overflow-x: hidden;
 		.app-sidebar { left: -$sidebar-width; }
 		.app-sidebar__overlay { visibility: hidden; }
 		&.sidenav-toggled {
+			.app-sidebar__user-avatar  { visibility: hidden;}
 			.app-content { margin-left: 0; }
 			.app-sidebar { left: 0; }
 			.app-sidebar__overlay { visibility: visible; }

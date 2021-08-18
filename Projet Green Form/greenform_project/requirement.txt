@@ -1,1 +1,5 @@
-fontawesome-free
+django==3.2.6
+mysqlclient==2.0.3
+pandas
+pillow
+qrcode
