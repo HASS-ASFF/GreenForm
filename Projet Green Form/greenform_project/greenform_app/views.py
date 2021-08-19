@@ -1,11 +1,66 @@
 from django.shortcuts import render,get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-from django.views.generic import ListView
-import json
 from .models import *
 from .forms import *
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render,get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user, allowed_users
 
+
+#---------------------Login and Register view------------------------------------------------------------
+
+@unauthenticated_user
+def loginRegister(request):
+
+	saved = False
+	if  request.POST.get("group") == "1":
+			formCentreFormation = centreFormationForm(request.POST)
+			if formCentreFormation.is_valid():
+						register = formCentreFormation.save()
+						user_group = Group.objects.get(id=request.POST.get("group")) 
+						register.groups.add(user_group)
+						saved = True
+	else:
+		formCentreFormation = centreFormationForm()
+	if  request.POST.get("group")== "2":
+			formPersonne = PersonneForm(request.POST)
+			if formPersonne.is_valid():
+						register = formPersonne.save()
+						user_group = Group.objects.get(id=request.POST.get("group")) 
+						register.groups.add(user_group)	
+						saved = True
+	else:
+		formPersonne = PersonneForm()
+	if saved:
+		messages.info(request, 'Votre compte a été creer avec succée ! Connectez-vous maintenant')
+
+ 
+ 
+	if request.POST.get("sign-in"):
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+  
+		user = authenticate(request,username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('home_membre')
+		else:
+			messages.info(request, 'Nom d\'utilisateur ou mot de passe incorrecte')
+	context = {
+				'formPersonne' : formPersonne,
+			 	'formCentreFormation' : formCentreFormation,
+	 }
+ 
+	return render(request, 'login_register/login_register.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('loginRegister')
 
 #-------------------Dashboard Admin views---------------------------------------------------------------------
 
@@ -130,9 +185,9 @@ def addpersonne(request):
 
 def addcentre(request):
 	if request.method == 'POST':
-		form = CentreForm(request.POST)
+		form = centreFormationForm(request.POST)
 	else:
-		form = CentreForm()
+		form = centreFormationForm()
 	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html',type="centre")
 
 #----------------------------------------ABONNEMENTS-----------------------------------------------------
@@ -199,15 +254,6 @@ def deletepartenaire(request,delete_id):
 def mapVisualization(request):
     #code here
     return render(request, 'dashboard_admin/mapVisualization.html')
-
-
-#---------------------Login and Register view -------------------------------------------------------------
-
-
-
-def loginRegister(request):
-    #code here
-    return render(request, 'login_register/login_register.html')
 
 
 #---------------------Etablissement view -------------------------------------------------------------
@@ -282,16 +328,6 @@ def badge_qrcode(request):
 
 
 #----------------------------------------QRCODE------------------------------------------------------------
-
-""" class QrcodePersonneListView(ListView):
-	model = Personne
-	template_name = "dashboard_admin/rechercheqrcode.html"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["qs_json"] = json.dumps(list(Personne.objects.values()))
-		return context """
-
 def Search_qrcode(request):
 	query = request.GET.get('query')
 	#value = request.GET.get('value')

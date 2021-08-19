@@ -5,6 +5,10 @@ urlpatterns = [
     
     #-------------------- ADMIN DAHSBOARD
     path('',home_admin,name='home_admin'),
+    
+    path('login-register/',loginRegister,name='loginRegister'),
+    path('logout/', logoutUser , name="logout"),
+    
     path('profil/',profil_admin,name='profil'),
     path('setting/',setting_admin,name='setting'),
 
@@ -31,13 +35,9 @@ urlpatterns = [
     path('etablissement-add',addetablissement,name='addetablissement'),
     path('etablissement-modify/<str:modify_id>',modifyetablissement,name='modifyetablissement'),
     path('etablissement-delete/<str:delete_id>',deleteetablissement,name='deleteetablissement'),
-
-    
-    path('activities-list/',activity_show,name='activities'),
     
 
     path('qr-code-search/',Search_qrcode,name='qrcodesearch'),
-    #path('qr-code-search/',QrcodePersonneListView.as_view(),name='qrcodesearch'),
     path('qr-code/<str:id_membre>/<str:type>',qrcode_info,name='qrcodeinfo'),
 
     path('login-register/',loginRegister,name='loginRegister'),

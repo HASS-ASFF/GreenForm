@@ -226,3 +226,45 @@ select{
   font-size: 14px;
 }
 
+
+.step-2{
+  /* display: none; */
+}
+
+/* .person-fields{
+  display : none;
+}
+*/
+
+
+
+.label-type-member{
+
+    position: relative !important;
+    /* top: 15px !important; */
+    transform: none !important;
+    transition: none !important;
+    margin-top: 0px !important;
+
+}
+
+
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-20px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+}
+
+.img-fluid {
+	
+	
+	transform: translatey(0px);
+	animation: float 6s ease-in-out infinite;
+}
+

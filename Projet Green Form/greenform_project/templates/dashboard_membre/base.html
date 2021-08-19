@@ -90,7 +90,7 @@
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             <li><a class="dropdown-item" href="{% url 'setting' %}"><i class="fa fa-cog fa-lg"></i> Parametres</a></li>
             <li><a class="dropdown-item" href="{% url 'profil' %}"><i class="fa fa-user fa-lg"></i> Profil</a></li>
-            <li><a class="dropdown-item" href="#"><i class="fa fa-sign-out fa-lg"></i>Deconnexion</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-sign-out fa-lg"></i>Deconnexion</a></li>
           </ul>
         </li>
       </ul>
@@ -102,7 +102,7 @@
     <aside class="app-sidebar">
       <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% static 'img/default.jpg' %}" alt="User Image">
         <div>
-          <p class="app-sidebar__user-name">Chekhche Ali</p>
+          <p class="app-sidebar__user-name">{{request.user.username}}</p>
           <p class="app-sidebar__user-designation">Membre</p>
         </div>
       </div>
@@ -110,9 +110,9 @@
         <li><a class="app-menu__item active" href="{% url 'home_membre' %}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Tableau de bord</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Mon Association</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Mon abonnements</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Mon badge</a></li>
+            <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
+            <li><a class="treeview-item" href="{% url 'abonnementList' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
+            <li><a class="treeview-item" href="#"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Mon Badge</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -129,8 +129,8 @@
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i style="padding-right:10px;" class="app-menu__icon fa fa-tree"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-map" aria-hidden="true"></i>Carte de visualisation</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-university" aria-hidden="true"></i>Liste des établissements</a></li>
+            <li><a class="treeview-item" href="{% url 'mapVisualization' %}"><i style="padding-right:10px;" class="fa fa-map" aria-hidden="true"></i>Carte de visualisation</a></li>
+            <li><a class="treeview-item" href="{% url 'etablissementList' %}"><i style="padding-right:10px;" class="fa fa-university" aria-hidden="true"></i>Liste des établissements</a></li>
           </ul>
         </li>
         
