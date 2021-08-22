@@ -83,7 +83,30 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                    </div>        
+                    </div>
+                     {% if not personne|length_is:"0" %} 
+                        <!--Pagination-->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                            
+                            {% for i in personne.paginator.page_range %}
+                                {% if personne.number == i %}
+                                <li class="page-item active" aria-current="page">
+                                    <span style="background-color: #469612;" class="page-link">
+                                    {{ i }}
+                                    <span class="sr-only">(current)</span>
+                                    </span>
+                                </li>
+                                {% else %}
+                                <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            </ul>
+                        </nav>
+                        <!--end of Pagination-->
+                        {% endif %}  
+                              
             {% endif %}
         </div>
     </div>
@@ -125,7 +148,31 @@
                                    
                                 </tbody>
                             </table>
-                    </div>        
+                    </div>    
+                    
+                    {% if not centre|length_is:"0" %} 
+                      <!--Pagination-->
+                      <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-center">
+                          
+                          {% for i in centre.paginator.page_range %}
+                              {% if centre.number == i %}
+                              <li class="page-item active" aria-current="page">
+                                  <span style="background-color: #469612;" class="page-link">
+                                  {{ i }}
+                                  <span class="sr-only">(current)</span>
+                                  </span>
+                              </li>
+                              {% else %}
+                              <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                              {% endif %}
+                          {% endfor %}
+                          
+                          </ul>
+                      </nav>
+                      <!--end of Pagination-->
+                      {% endif %}                
+
             {% endif %}
         </div>
     </div>
@@ -174,37 +221,6 @@ $(document).ready(function(){
    
 
 });
-
-{% comment %} const data = '{{qs_json}}'
-
-const rdata = JSON.parse(data.replace(/&quot;/g,'"'))
-console.log(rdata);
-
-const input = document.getElementById('search');
-let filteredArr = [];
-input.addEventListener('keyup',(e)=>{
-    var table = document.getElementById('body-info');
-    table.innerHTML = "";
-    filteredArr = rdata.filter(info => info['nom'].includes(e.target.value));
-    console.log(filteredArr);
-    if(filteredArr.length > 0){
-        filteredArr.map(item=>{
-            table.innerHTML += `<tr>
-                                    <td>${item['nom']}</td>
-                                    <td>${item['prenom']}</td>
-                                    <td>${item['type']}</td>
-                                    <td>
-                                        <button style="border-radius: 25px;" class="btn  show-img-qrpers" data-url="#">
-                                                Afficher Qr code
-                                            </button>
-                                    </td>
-                                </tr>`
-        })
-    }
-    else{
-        table.innerHTML = `<strong style="text-align:center;">Aucun Résultat trouvé !</strong>`
-    }
-}); {% endcomment %}
 </script>
 
 {% endblock  %}

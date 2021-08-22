@@ -1,3 +1,4 @@
+from django.core import paginator
 from django.shortcuts import render,get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -10,6 +11,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
+from django.core.paginator import Paginator
 
 
 #---------------------Login and Register view------------------------------------------------------------
@@ -77,12 +79,17 @@ def setting_admin(request):
     return render(request,'dashboard_admin/setting.html')
 
 #----------------------------------------ACTIVITY------------------------------------------------------
+
 def activitylist(request):
-    activity = Activite.objects.all()
-    context = {
-        'activity' : activity,
+	activity = Activite.objects.all()
+	paginator = Paginator(activity,4)
+	pages = request.GET.get('page')
+	page_obj = paginator.get_page(pages)
+
+	context = {
+        'activity' : page_obj,
     }
-    return render(request,'dashboard_admin/activitieslist.html',context)
+	return render(request,'dashboard_admin/activitieslist.html',context)
 
 def save_all_act(request,form,template_name):
 	data = dict()
@@ -137,11 +144,18 @@ def deleteactivity(request,delete_id):
 #----------------------------------------MEMBRES---------------------------------------------------
 def memberslist(request):
 	personne = Personne.objects.all()
+	paginator_pers = Paginator(personne,4)
+	pages_p = request.GET.get('page')
+	page_pers = paginator_pers.get_page(pages_p)
+
 	centre = Centre_formation.objects.all()
-    
+	paginator_centr = Paginator(centre,4)
+	pages_c = request.GET.get('page')
+	page_centr = paginator_centr.get_page(pages_c)
+
 	context = {
-        'personne':personne,
-		'centre':centre,
+        'personne':page_pers,
+		'centre':page_centr,
     }
 
 	return render(request,'dashboard_admin/memberlist.html',context)
@@ -192,14 +206,21 @@ def addcentre(request):
 
 #----------------------------------------ABONNEMENTS-----------------------------------------------------
 def abonnementList(request):
-    abonnements = Adherent.objects.all()
-    return render(request, 'dashboard_admin/abonnementList.html',{'abonnement':abonnements})
+	abonnements = Adherent.objects.all()
+	paginator = Paginator(abonnements,4)
+	pages = request.GET.get('page')
+	page_obj = paginator.get_page(pages)
+
+	return render(request, 'dashboard_admin/abonnementList.html',{'abonnement':page_obj})
 
 #----------------------------------------PARTNERS-----------------------------------------------------------
 def partnersList(request):
-    partenaires = Partenaire.objects.all()
+	partenaires = Partenaire.objects.all()
+	paginator = Paginator(partenaires,4)
+	pages = request.GET.get('page')
+	page_obj = paginator.get_page(pages)
 
-    return render(request, 'dashboard_admin/partnersList.html',{'partenaires':partenaires})
+	return render(request, 'dashboard_admin/partnersList.html',{'partenaires':page_obj})
 
 def save_all_part(request,form,template_name):
 	data = dict()
@@ -259,8 +280,12 @@ def mapVisualization(request):
 #---------------------Etablissement view -------------------------------------------------------------
 
 def etablissementList(request):
-    etablissements = Etablissement.objects.all()
-    return render(request, 'dashboard_admin/etablissementList.html',{'etablissement':etablissements})
+	etablissements = Etablissement.objects.all()
+	paginator = Paginator(etablissements,4)
+	pages = request.GET.get('page')
+	page_obj = paginator.get_page(pages)
+
+	return render(request, 'dashboard_admin/etablissementList.html',{'etablissement':page_obj})
 
 def save_all_etab(request,form,template_name):
 	data = dict()
@@ -330,8 +355,7 @@ def badge_qrcode(request):
 #----------------------------------------QRCODE------------------------------------------------------------
 def Search_qrcode(request):
 	query = request.GET.get('query')
-	#value = request.GET.get('value')
-	#print(value)
+	
 	if not query:
 		personnes = Personne.objects.all()
 		centre = Centre_formation.objects.all()
@@ -341,9 +365,16 @@ def Search_qrcode(request):
 		if not personnes:
 			personnes = Personne.objects.filter(prenom__icontains=query) 
 
+	paginator_pers = Paginator(personnes,4)
+	pages_p = request.GET.get('page')
+	page_pers = paginator_pers.get_page(pages_p)
+
+	paginator_centr = Paginator(centre,4)
+	pages_c = request.GET.get('page')
+	page_centr = paginator_centr.get_page(pages_c)
 	context = {
-		'personne' : personnes,
-		'centre' : centre,
+		'personne' : page_pers,
+		'centre' : page_centr,
 		'query':query,
 	}
 	return render(request,'dashboard_admin/rechercheqrcode.html',context)
