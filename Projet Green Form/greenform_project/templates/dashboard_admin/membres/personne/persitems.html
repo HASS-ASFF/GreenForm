@@ -1,13 +1,13 @@
 
    {% for m in personne  %}
-   <tr>
-       <th scope="row">{{ m.nom }}</th>
-           <td>{{ m.prenom }}</td>
-           <td>{{ m.sexe }}</td>
-       
-           <td>{{ m.date_joined}}</td>
-           <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
-           <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
-           </button></td>
-   </tr>
-   {% endfor %}
+    <tr>
+        <th scope="row">{{ m.nom }}</th>
+            <td>{{ m.prenom }}</td>
+            <td>{{ m.sexe }}</td>
+        
+            <td>{{ m.date_joined}}</td>
+            <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
+            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
+            </button></td>
+    </tr>
+    {% endfor %}
