@@ -145,12 +145,12 @@ def deleteactivity(request,delete_id):
 def memberslist(request):
 	personne = Personne.objects.all()
 	paginator_pers = Paginator(personne,4)
-	pages_p = request.GET.get('page')
+	pages_p = request.GET.get('pagePerson')
 	page_pers = paginator_pers.get_page(pages_p)
 
 	centre = Centre_formation.objects.all()
 	paginator_centr = Paginator(centre,4)
-	pages_c = request.GET.get('page')
+	pages_c = request.GET.get('pageCenter')
 	page_centr = paginator_centr.get_page(pages_c)
 
 	context = {

@@ -21,39 +21,8 @@ type_membre = (
 )
 
 class MembreManager(BaseUserManager):
-    """Helps Django work with our custom user model."""
-    
-    # def create_user(self, email, name, password=None):
-    #     """Creates a user profile object."""
-
-    #     if not email:
-    #         raise ValueError('Users must have an email address.')
-
-    #     email = self.normalize_email(email)
-    #     user = self.model(email=email, username=name)
-
-    #     user.user_id = -1
-    #     user.set_password(password)
-    #     user.save(using=self._db)
-
-    #     return user
-    
-    # def create_superuser(self, email, username, password):
-    #     """Creates and saves a new superuser with given details."""
-
-    #     user = self.create_user(email = email, username = username, password = password)
-
-    #     user.is_superuser = True
-
-    #     user.save(using=self._db)
-        
-        ##################
-        
+     
     def create_superuser(self, username, password,email, **other_fields):    
-        # other_fields.setdefault('is_staff', True)
-        # other_fields.setdefault('is_superuser', True)
-        # other_fields.setdefault('is_active', True)
-    #  user = self.create_user(email = email, username = username, password = password)
         user = self.create_user(
         username=username,
         email=email,
@@ -63,35 +32,14 @@ class MembreManager(BaseUserManager):
         user.is_staff = True
         user.save(using=self._db)
         return user
-        # user.user_id = -1
-        # if other_fields.get('is_staff') is not True:
-        #     raise ValueError(
-        #         'Superuser must be assigned to is_staff=True.')
-        # if other_fields.get('is_superuser') is not True:
-        #     raise ValueError(
-        #         'Superuser must be assigned to is_superuser=True.')
-
-        # return self.create_user(username, email, password, **other_fields)
-    # def save_user(self, username, email, password, **extra_fields):
-    #     """
-    #     Creates and saves a User with the given email and password.
-    #     """
-      
-       
+    
     def create_user(self,username, email=None, password=None, **other_fields):
         if not username:
             raise ValueError('The given username must be set')
-        
-        # other_fields['is_staff'] = False
-        # username = self.get_by_natural_key(username)
         email = self.normalize_email(email)
         user = self.model(username=username, email=email,  **other_fields)
-        # Call this method for password hashing
         user.set_password(password)
         user.save(using=self._db)
-        return user
-        # return self.save_user(username, email, password, **other_fields)
-
 class Membre(AbstractUser,PermissionsMixin):
 
     username_validator = UnicodeUsernameValidator()
@@ -123,8 +71,6 @@ class Membre(AbstractUser,PermissionsMixin):
         ),
     )
     
-    # last_read = models.BooleanField(default=False)
-    
     USERNAME_FIELD = 'username'
     
     objects = MembreManager()
@@ -140,10 +86,6 @@ class Membre(AbstractUser,PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
-
-    # @property
-    # def is_superuser(self):        
-    #     return self.is_superuser
 
 
 class Inscription(models.Model):
@@ -263,5 +205,5 @@ class Activite(models.Model):
     id_etablissement = models.ForeignKey(Etablissement,on_delete=models.CASCADE)
     date = models.DateField()
 
-    def __str__(self):
-        return self.nom
+    # def __str__(self):
+    #     return self.nom

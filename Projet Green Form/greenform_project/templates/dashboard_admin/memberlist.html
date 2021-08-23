@@ -26,7 +26,6 @@
               <div class="tile">
               <div class="tile-title">
                 <h4 style="color: #222d32;">Personnes</h4>
-                <button class="btn show-form-pers" data-url="{% url 'addpersonne' %}" >Ajouter</button>
                 <button class="btn">Exporter</button>
               </div>
                   <div class="table-responsive">
@@ -36,11 +35,9 @@
                                         <th>Nom</th>
                                         <th>Prenom</th>
                                         <th>Sexe</th>
-                                        
-                                    
-                                        <th style="color: #469612;">Modifier</th>
-                                        <th style="color: #469612;">Supprimer</th>
-                                                            
+                                        <th>Date d'inscription</th>
+                                        <th></th>
+                                                                                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,7 +59,7 @@
                                     </span>
                                 </li>
                                 {% else %}
-                                <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                <li class="page-item"><a style="color: #469612;" class="page-link" href="?pagePerson={{ i }}">{{ i }}</a></li>
                                 {% endif %}
                             {% endfor %}
                             
@@ -78,7 +75,6 @@
             <div class="tile">
             <div class="tile-title">
                 <h4 style="color: #222d32;">Centre de formation</h4>  
-              <button class="btn show-form-centre" data-url="{% url 'addcentre' %}" >Ajouter</button>
               <button class="btn">Exporter</button>
             </div>
                 <div class="table-responsive">
@@ -86,12 +82,11 @@
                               <thead>
                                   <tr>
                                       <th>Responsable</th>
-                                      <th>Nom</th>
-                                      <th>Code postal</th>
+                                      <th>Nom du centre</th>
+                                      <th>Date d'inscription</th>
+                                      <th></th>
                                       
                                   
-                                      <th style="color: #469612;">Modifier</th>
-                                      <th style="color: #469612;">Supprimer</th>
                                                           
                                   </tr>
                               </thead>
@@ -114,7 +109,7 @@
                                   </span>
                               </li>
                               {% else %}
-                              <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                              <li class="page-item"><a style="color: #469612;" class="page-link" href="?pageCenter={{ i }}">{{ i }}</a></li>
                               {% endif %}
                           {% endfor %}
                           
