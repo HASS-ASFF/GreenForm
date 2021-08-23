@@ -19,6 +19,8 @@ urlpatterns = [
     path('export/activite', exportetactivity, name='export_activite'),
 
     path('members-list/',memberslist,name='memberslist'),
+    path('personne-delete/<str:delete_id>',deletepers,name='deletepersonne'),
+    path('centre-delete/<str:delete_id>',deletecentr,name='deletecentre'),
     path('export/membre/<str:type>', exportmembre, name='export_membre'),
 
     path('abonnements-list/',abonnementList,name='abonnementList'),

@@ -5,7 +5,7 @@
            <td>{{ m.nom_du_centre }}</td>
        
            <td>{{ m.date_joined }}</td>
-           <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
+           <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="{% url 'deletecentre' delete_id=m.id %}">
            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
            </button></td>
    </tr>

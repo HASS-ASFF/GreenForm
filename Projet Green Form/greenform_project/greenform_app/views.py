@@ -201,35 +201,38 @@ def memberslist(request):
 
 	return render(request,'dashboard_admin/memberlist.html',context)
 
-def save_all_memb(request,form,template_name,type):
+def deletepers(request,delete_id):
 	data = dict()
-	if request.method == "POST":
-		if form.is_valid():
-			form.save()
-			data['form_is_valid']=True
-			context = {}
-			if type == "center":
-				centre=Centre_formation.objects.all()
-				context = {
-					'centre': centre,
-					'type':type,
-				}
-				data['memberslist'] = render_to_string('dashboard_admin/membres/centre/centreitems.html',context)
-			else:
-				personne=Personne.objects.all()
-				context = {
-					'personne': personne,
-					'type':type,
-				}
-				data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',context)	
+	personne = get_object_or_404(Personne , id=delete_id)
+
+	if request.method == 'POST':
+		personne.delete()
+		data['form_is_valid']=True
+		personne=Personne.objects.all()
+		data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',{'personne':personne})
 	else:
-		data['form_is_valid']=False
-	
-	context={
-		'form': form,
-	}
-	data['html_form'] = render_to_string(template_name,context,request)
+		context={
+		'personne':personne,
+		}
+		data['html_form'] = render_to_string('dashboard_admin/membres/personne/deletepersonne.html',context,request=request)
 	return JsonResponse(data)
+
+def deletecentr(request,delete_id):
+	data = dict()
+	centre = get_object_or_404(Centre_formation , id=delete_id)
+
+	if request.method == 'POST':
+		centre.delete()
+		data['form_is_valid']=True
+		centre=Centre_formation.objects.all()
+		data['memberslist'] = render_to_string('dashboard_admin/membres/centre/centreitems.html',{'centre':centre})
+	else:
+		context={
+		'centre':centre,
+		}
+		data['html_form'] = render_to_string('dashboard_admin/membres/centre/deletecentre.html',context,request=request)
+	return JsonResponse(data)
+
 
 def exportmembre(request,type):
 	response = HttpResponse(content_type='application/ms-excel')

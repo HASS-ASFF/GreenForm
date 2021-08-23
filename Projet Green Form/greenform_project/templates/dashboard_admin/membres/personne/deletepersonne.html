@@ -1,0 +1,18 @@
+
+<form method="POST" data-url="{% url 'deletepersonne' delete_id=personne.id %}" class="delete-form-pers">
+    {% csrf_token %}
+    <div class="modal-header">
+       <h5 class="modal-title">Supression Personne</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+       <span aria-hidden="true">&times;</span>
+       </button>
+    </div>
+    <div class="modal-body">
+       <p class="lead">Vous Etes sur de supprimer la personne <strong>{{personne.nom}}</strong>?</p>
+    </div>
+    <div class="modal-footer">
+       <button type="submit" class="btn">Oui</button>
+       <button type="button" class="btn" data-dismiss="modal">Non</button>
+    </div>
+ </form>   
+ 
