@@ -27,22 +27,30 @@
         <div class="tile-body">
             <h4>Rechercher un Membre</h4>
             <form style="display: block;" action="{% url 'qrcodesearch' %}" class='form-inline' id="myform">
-                <div class="input-group">
-                  <input name="query" type='text' id='search' class="form-control search-form" placeholder="rechercher un membre...">
-                  <span class="input-group-btn" style="width:39px">
-                    <button id="search-this" type="submit" class="pull-right btn btn-default search-btn">
-                        <i class="fa fa-search"></i>
-                    </button>
-                  </span>
-                </div>
-                <div style="margin-top: 20px;" class="form-group col-md-6">
-                <label style="padding-right: 5px;" for="inputState">Type de membre </label>
-                    <select  id="inputState" class="form-control">
-                        <option value="none" selected >Tous</option>
-                        <option  value="personne">Personne</option>
-                        <option  value="centre">Centre de formation</option>
-                    </select>
-                </div>    
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                        <input name="query" type='text' id='search' class="form-control search-form" placeholder="Tapez votre recherche...">
+                        </div>
+                    </div>
+                <div class="col-md-4">
+                    <div class="form-group">    
+                            <label class="label-type-search" for="inputState">Type de membre </label>
+                            <select  id="inputState" class="form-control">
+                                <option value="none" selected >Tous</option>
+                                <option  value="personne">Personne</option>
+                                <option  value="centre">Centre de formation</option>
+                            </select>
+                    </div>        
+                </div> 
+                <div class="col-md-4">
+                    <span class="input-group-btn">
+                        <button id="search-this" type="submit" class="pull-right btn btn-default search-btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                 </div>
+            </div>   
               </form>
         </div>
     </div>
@@ -51,7 +59,7 @@
         <div class="tile-body">
          
             {% if personne|length_is:"0" %}
-            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour centre de formation <strong style="color:#469612;">Centre de formation</strong></p>
+            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour  <strong style="color:#469612;">Personne</strong></p>
              {% else %}
              <div class="tile-title">
                 <h4>Personne disponible</h4>
@@ -114,7 +122,7 @@
     <div class="tile" id="centre">
         <div class="tile-body">
             {% if centre|length_is:"0" %}
-            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour centre de formation <strong style="color:#469612;">Centre de formation</strong></p>
+            <p style="font-size:16px;text-align:center;">Aucun résultat trouvé pour  <strong style="color:#469612;">Centre de formation</strong></p>
 
              {% else %}
              <div class="tile-title">

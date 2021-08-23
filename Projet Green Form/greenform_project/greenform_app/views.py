@@ -11,7 +11,10 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
+from django.http import HttpResponse
 from django.core.paginator import Paginator
+import folium
+import xlwt
 
 
 #---------------------Login and Register view------------------------------------------------------------
@@ -140,17 +143,55 @@ def deleteactivity(request,delete_id):
 		data['html_form'] = render_to_string('dashboard_admin/activities/deleteactivity.html',context,request=request)
 	return JsonResponse(data)
 
+def exportetactivity(request):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename="Liste Activités.xls"'
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+	
+	
+    # Sheet header, first row
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.num_format_str = 'D-MMM-YY'
+	font_style.font.bold = True
+
+	columns = ['Nom', 'Description', 'Date']
+	rows = Activite.objects.all().values_list('nom','desc', 'date')
+	
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+    # Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	style = xlwt.XFStyle()
+	style.num_format_str = 'D-MMM-YY'
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			if col_num == 2:
+				ws.write(row_num, col_num, row[col_num], style)
+			else:
+				ws.write(row_num, col_num, row[col_num], font_style)
+
+
+	wb.save(response)
+
+	return response
 
 #----------------------------------------MEMBRES---------------------------------------------------
 def memberslist(request):
 	personne = Personne.objects.all()
 	paginator_pers = Paginator(personne,4)
-	pages_p = request.GET.get('page')
+	pages_p = request.GET.get('pagePerson')
 	page_pers = paginator_pers.get_page(pages_p)
 
 	centre = Centre_formation.objects.all()
 	paginator_centr = Paginator(centre,4)
-	pages_c = request.GET.get('page')
+	pages_c = request.GET.get('pageCenter')
 	page_centr = paginator_centr.get_page(pages_c)
 
 	context = {
@@ -190,19 +231,43 @@ def save_all_memb(request,form,template_name,type):
 	data['html_form'] = render_to_string(template_name,context,request)
 	return JsonResponse(data)
 
-def addpersonne(request):
-	if request.method == 'POST':
-		form = PersonneForm(request.POST)
-	else:
-		form = PersonneForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html',type="personne")
+def exportmembre(request,type):
+	response = HttpResponse(content_type='application/ms-excel')
+	
 
-def addcentre(request):
-	if request.method == 'POST':
-		form = centreFormationForm(request.POST)
-	else:
-		form = centreFormationForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html',type="centre")
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+
+    # Sheet header, first row
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	if type == "personne":
+		columns = ['Nom', 'Prenom', 'sexe', 'Adresse','Code postal', 'Téléphone' ]
+		rows = Personne.objects.all().values_list('nom', 'prenom', 'sexe', 'adresse', 'code_postal', 'num_tel')
+		response['Content-Disposition'] = 'attachment; filename="Liste Personnes.xls"'
+	if type == "centre":
+		columns = ['Responsable', 'Nom', 'Code Postal']
+		rows = Centre_formation.objects.all().values_list('responsable', 'nom_du_centre', 'code_postal')
+		response['Content-Disposition'] = 'attachment; filename="Liste Centre de formation.xls"'
+
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			ws.write(row_num, col_num, row[col_num], font_style)
+
+	wb.save(response)
+
+	return response
 
 #----------------------------------------ABONNEMENTS-----------------------------------------------------
 def abonnementList(request):
@@ -213,6 +278,37 @@ def abonnementList(request):
 
 	return render(request, 'dashboard_admin/abonnementList.html',{'abonnement':page_obj})
 
+def exportabonnement(request):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename="Liste Adhérants.xls"'
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+
+    # Sheet header, first row
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	columns = ['Membre', 'Date abonnement', 'Numéro']
+	rows = Adherent.objects.all().values_list('id_inscription', 'date_abonnement', 'id_abonnement')
+	
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			ws.write(row_num, col_num, row[col_num], font_style)
+
+	wb.save(response)
+
+	return response
 #----------------------------------------PARTNERS-----------------------------------------------------------
 def partnersList(request):
 	partenaires = Partenaire.objects.all()
@@ -271,10 +367,43 @@ def deletepartenaire(request,delete_id):
 		data['html_form'] = render_to_string('dashboard_admin/partenaires/deletepart.html',context,request=request)
 	return JsonResponse(data)
 
+def exportpartenaire(request):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename="Liste Partenaires.xls"'
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+
+    # Sheet header, first row
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	columns = ['Nom','Adresse','Code postal', 'Téléphone' ]
+	rows = Partenaire.objects.all().values_list('nom', 'adresse', 'code_postal', 'num_tel')
+	
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			ws.write(row_num, col_num, row[col_num], font_style)
+
+	wb.save(response)
+
+	return response
+
 #----------------------------------------MAPVIZUALISATION--------------------------------------------------
 def mapVisualization(request):
-    #code here
-    return render(request, 'dashboard_admin/mapVisualization.html')
+	map = folium.Map(location=[47,2],zoom_start=5)
+	map = map._repr_html_()
+	return render(request, 'dashboard_admin/mapVisualization.html',{'map':map})
 
 
 #---------------------Etablissement view -------------------------------------------------------------
@@ -336,6 +465,37 @@ def deleteetablissement(request,delete_id):
 		data['html_form'] = render_to_string('dashboard_admin/etablissement/deleteetablissement.html',context,request=request)
 	return JsonResponse(data)
 
+def exportetablissement(request):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename="Liste Etablissements.xls"'
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+
+    # Sheet header, first row
+	row_num = 0
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	columns = ['Représentant', 'Nom', 'Type', 'Adresse','Code postal']
+	rows = Etablissement.objects.all().values_list('representant','nom','type_etablissement', 'adresse', 'code_postal')
+	
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)):
+			ws.write(row_num, col_num, row[col_num], font_style)
+
+	wb.save(response)
+
+	return response
 
 #------------------- Dashboard Member views ----------------------------------------------------------------------------
 

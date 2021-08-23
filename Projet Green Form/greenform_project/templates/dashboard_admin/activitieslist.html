@@ -10,6 +10,14 @@
         background-color: white;
         text-decoration: none !important;
     }
+
+    .exportcsv{
+        color: #469612;
+    }
+
+    .exportcsv:hover{
+        color: #469612;
+    }
 </style>
 
 
@@ -28,7 +36,7 @@
               <div class="tile">
               <div class="tile-title">
                 <button class="btn show-form" data-url="{% url 'addactivity' %}" >Ajouter</button>
-                <button class="btn">Exporter</button>
+                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_activite' %}">Exporter</a></button>
               </div>
                   <div class="table-responsive">
                             <table class="table" id="act-table">
@@ -39,8 +47,8 @@
                                         <th>Date</th>
                                         
                                     
-                                        <th style="color: #469612;">Modifier</th>
-                                        <th style="color: #469612;">Supprimer</th>
+                                        <th></th>
+                                        <th></th>
                                                             
                                     </tr>
                                 </thead>

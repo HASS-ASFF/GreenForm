@@ -11,6 +11,15 @@
         background-color: white;
         text-decoration: none !important;
     }
+
+    .exportcsv{
+        color: #469612;
+    }
+
+    .exportcsv:hover{
+        color: #469612;
+    }
+
 </style>
 
 <main class="app-content">
@@ -28,7 +37,7 @@
               <div class="tile">
               <div class="tile-title">
                 <button class="btn show-form" data-url="{% url 'addetablissement' %}" >Ajouter</button>
-                <button class="btn">Exporter</button>
+                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_etab' %}">Exporter</a></button>
               </div>
                   <div class="table-responsive">
                             <table class="table" id="etab-table">
@@ -41,8 +50,8 @@
                                         <th>Type</th>
                                         
                                     
-                                        <th style="color: #469612;">Modifier</th>
-                                        <th style="color: #469612;">Supprimer</th>
+                                        <th></th>
+                                        <th></th>
                                                             
                                     </tr>
                                 </thead>

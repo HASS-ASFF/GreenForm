@@ -4,3 +4,8 @@ pandas
 pillow
 qrcode
 django-crispy-forms
+folium
+geocoder
+xlwt
+xutils
+xlrd
