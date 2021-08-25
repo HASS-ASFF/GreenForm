@@ -1,4 +1,4 @@
-{% extends 'dashboard_admin/base.html' %}
+{% extends 'base.html' %}
 
 {% block 'content' %}
 {% load static %}
@@ -36,7 +36,9 @@
         <div class="col-md-12">
               <div class="tile">
               <div class="tile-title">
+                {% if request.user.is_superuser %} 
                 <button class="btn show-form" data-url="{% url 'addpartenaire' %}" >Ajouter</button>
+                {% endif %}
                 <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_part' %}">Exporter</a></button>
               </div>
                   <div class="table-responsive">

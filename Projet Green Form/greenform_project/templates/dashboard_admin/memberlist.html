@@ -1,4 +1,4 @@
-{% extends 'dashboard_admin/base.html' %}
+{% extends 'base.html' %}
 
 {% block 'content' %}
 {% load static %}
@@ -34,6 +34,9 @@
               <div class="tile">
               <div class="tile-title">
                 <h4 style="color: #222d32;">Personnes</h4>
+                {% if request.user.is_superuser %} 
+                <button class="btn show-form-pers" data-url="{% url 'addpersonne' %}">Ajouter</button>
+                {% endif %}
                 <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_membre' type="personne" %}">Exporter</a></button>
               </div>
                   <div class="table-responsive">
@@ -83,6 +86,9 @@
             <div class="tile">
             <div class="tile-title">
                 <h4 style="color: #222d32;">Centre de formation</h4>  
+                {% if request.user.is_superuser %}   
+              <button class="btn show-form-centr" data-url="{% url 'addcentre' %}">Ajouter</button>
+                {% endif %}  
               <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_membre' type="centre" %}">Exporter</a></button>
             </div>
                 <div class="table-responsive">
