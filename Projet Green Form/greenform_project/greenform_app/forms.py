@@ -9,6 +9,37 @@ from django.contrib.auth.forms import *
 from django.utils.translation import gettext_lazy as _
 
 
+class MemberForm(forms.ModelForm):
+    class Meta:
+        model = Membre
+        fields = ['username', 'email', 'password', 'image_profil']
+        password2 = forms.CharField(
+        label='Repeat password', widget=forms.PasswordInput) 
+        def clean_password2(self):
+            cd = self.cleaned_data
+            if cd['password'] != cd['password2']:
+                raise forms.ValidationError('Passwords do not match.')
+            return cd['password2']
+        
+        def clean_email(self):
+            email = self.cleaned_data['email']
+            if Personne.objects.filter(email=email).exists():
+                raise forms.ValidationError(
+                    'Please use another Email, that is already taken')
+            return email
+        
+        def save(self, commit=True):
+            user = super(MemberForm, self).save(commit=False)
+            user.set_password(self.cleaned_data["password"])
+            if commit:
+                user.save()
+            return user
+        widgets = {
+                'username' : forms.TextInput(attrs={'class': 'form-control'}),
+                'password' : forms.PasswordInput(attrs={'class': 'form-control mb-3'}),
+                'email' : forms.TextInput(attrs={'class':'form-control'}),
+                'password2' : forms.TextInput(attrs={'class': 'form-control'})
+        }
         
 class PersonneForm(forms.ModelForm):
     username = forms.CharField(

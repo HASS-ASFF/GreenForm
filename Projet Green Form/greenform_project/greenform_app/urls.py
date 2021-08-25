@@ -10,7 +10,7 @@ urlpatterns = [
     path('logout/', logoutUser , name="logout"),
     
     path('profil/',profil_admin,name='profil'),
-    path('setting/',setting_admin,name='setting'),
+    path('profil/reset-password', resetPassword, name='resetPassword'),
 
     path('activities-list/',activitylist,name='activitylist'),
     path('activities-add',addactivity,name='addactivity'),

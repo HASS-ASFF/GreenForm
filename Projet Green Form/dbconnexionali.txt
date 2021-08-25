@@ -1,0 +1,10 @@
+DATABASES = {
+    'default': {
+        'ENGINE' : 'django.db.backends.mysql',
+        'NAME' : 'GreenForm_db',
+        'USER' : 'root',
+        'PASSWORD' : 'root',
+        'HOST' : '/Applications/MAMP/tmp/mysql/mysql.sock',
+        'PORT' : '7779',
+    }
+}

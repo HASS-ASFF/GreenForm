@@ -74,12 +74,27 @@ def home_admin(request):
     return render(request,'dashboard_admin/index.html')
 
 def profil_admin(request):
-    #code here
-    return render(request,'dashboard_admin/profil.html')
+	member = Membre.objects.get(username=request.user.username)
+	if request.POST == 'POST':
+		memberForm = MemberForm(request.POST, request.FILE, instance=member)
+		if memberForm.is_valid():
+			memberForm.save()
+			messages.info(request, 'Profil Modifié avec succée !')
+		else:
+			messages.error(request, 'Une erreur est survenu !')
+	else:
+		memberForm = MemberForm(instance=member)
 
-def setting_admin(request):
-    #code here
-    return render(request,'dashboard_admin/setting.html')
+	context = {
+		'memberForm' : memberForm
+	}
+ 
+	return render(request,'dashboard_admin/profil.html', context)
+
+
+def resetPassword(request):
+    context = {}
+    return render(request, 'dashboard_admin/reset-password.html', context)
 
 #----------------------------------------ACTIVITY------------------------------------------------------
 

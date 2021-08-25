@@ -15260,28 +15260,12 @@ be a descendant of the grid when it is being dragged.
   right: 24px !important;
 }
 
-/* 
-@media(min-width: 768px) {
- .sidenav-toggled .app-content{
-		margin-left: 0; }
-
- .app-sidebar { left: -230px; }
- .app-sidebar__overlay { visibility: hidden; }
-		}
-	
-	
-	@media(max-width: 767px) {
-     /* {
-		overflow-x : hidden;
-    } */
-		 /* .app-sidebar { left: -230; }
-		 .app-sidebar__overlay { visibility: hidden; }
-		 .sidenav-toggled .app-content {
-		 margin-left: 0; }
-			 .app-sidebar { left: 0; }
-			 .app-sidebar__overlay { visibility: visible; }
-		} */
-
 .label-type-search {
     margin-right: 12px;
+}
+
+
+.profil-pic {
+margin-left: 90px;
+
 }

@@ -59,7 +59,7 @@ class Membre(AbstractUser,PermissionsMixin):
     password = models.CharField(_('password'), max_length=128, null=True)
     type = models.CharField(max_length=30,choices=type_membre, null=True)
     qr_code = models.ImageField(upload_to='qr_codes/',blank=True)
-    
+    image_profil = models.ImageField(null=True, default="default_img.webp",upload_to='profil_photo/', blank=True, )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False) 
     is_superuser = models.BooleanField(
