@@ -82,13 +82,20 @@ def profil_admin(request):
 
 @unauthenticated_user
 def activitylist(request):
-	activity = Activite.objects.all()
-	paginator = Paginator(activity,4)
-	pages = request.GET.get('page')
-	page_obj = paginator.get_page(pages)
+	activity_admin = Activite.objects.all()
+	activity_membre = Activite.objects.exclude(membres=request.user.id)
+
+	paginator_membre = Paginator(activity_membre,4)
+	pages_membre = request.GET.get('page')
+	pages_obj_membre = paginator_membre.get_page(pages_membre)
+
+	paginator_admin = Paginator(activity_admin,4)
+	pages_admin = request.GET.get('page')
+	pages_obj_admin = paginator_admin.get_page(pages_admin)
 
 	context = {
-        'activity' : page_obj,
+        'activity_admin' : pages_obj_admin,
+		'activity_membre' : pages_obj_membre,
     }
 	return render(request,'dashboard_admin/activitieslist.html',context)
 
@@ -108,6 +115,37 @@ def save_all_act(request,form,template_name):
 	}
 	data['html_form'] = render_to_string(template_name,context,request)
 	return JsonResponse(data)
+
+def Participate(request,act_id):
+	data = dict()
+	saved = False
+	activity = get_object_or_404(Activite , id=act_id )
+	if request.method == 'POST':
+		print('post')
+		data['form_is_valid']=True
+		saved = True
+		activity.membres.add(Membre.objects.get(id=request.user.id))
+	if saved:
+		messages.info(request, 'Vous Participez desormais à cette activité !')
+	else:
+		print('get')
+		context={
+			'activity':activity,
+		}
+		data['html_form'] = render_to_string('dashboard_membre/participate.html',context,request=request)
+	return JsonResponse(data)
+
+def actdetails(request,act_id):
+	data = dict()
+	activity = get_object_or_404(Activite, id=act_id)
+	membres = [m for m in Membre.objects.all() if m in activity.membres.all().exclude(id=request.user.id)]
+	context={
+		'activity':activity,
+		'membres': membres,
+	}
+	data['html_form'] = render_to_string("dashboard_membre/activitydetail.html",context,request=request)
+	return JsonResponse(data)
+
 
 def addactivity(request):
 	if request.method == 'POST':
@@ -146,10 +184,7 @@ def exportetactivity(request):
 	response['Content-Disposition'] = 'attachment; filename="Liste Activités.xls"'
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
-	
-	
-    # Sheet header, first row
+	ws = wb.add_sheet('Users Data') 
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -200,52 +235,49 @@ def memberslist(request):
 
 	return render(request,'dashboard_admin/memberlist.html',context)
 
-def save_all_memb(request,form,template_name,type):
+def save_all_memb(request,form,template_name):
 	data = dict()
+	
 	if request.method == "POST":
 		if form.is_valid():
 			form.save()
 			data['form_is_valid']=True
-			if type == "centre":
-				user_group = Group.objects.get(id=request.POST.get("group")) 
-				form.groups.add(user_group)
-				centre = Centre_formation.objects.all()
-				data['memberslist'] = render_to_string('dashboard_admin/membres/centre/centreitems.html',{'centre': centre})
-			else:
-				user_group = Group.objects.get(id=request.POST.get("group")) 
-				form.groups.add(user_group)
-				personne = Personne.objects.all()
-				data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',{'personne': personne})	
+			centre = Centre_formation.objects.all()
+			
+			#data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',{'personne': personne})
+			data['memberslist'] = render_to_string('dashboard_admin/membres/personne/centreitems.html',{'centre': centre})	
 	else:
 		data['form_is_valid']=False
 	
 	context={
 		'form': form,
 	}
+	
+	print(data['form_is_valid'])
 	data['html_form'] = render_to_string(template_name,context,request)
 	return JsonResponse(data)
 
-def addpersonne(request):
+""" def addpersonne(request):
 	if request.method == 'POST':
 		form = PersonneForm(request.POST)
 	else:
 		form = PersonneForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html',type="personne")
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html') """
 
-def modifypersonne(request,modify_id):
+""" def modifypersonne(request,modify_id):
 	personne = get_object_or_404(Personne , id=modify_id )
 	if request.method == 'POST':
 		form = PersonneForm(request.POST,instance=personne)
 	else:
 		form = PersonneForm(instance=personne)
-	return save_all_memb(request,form,'dashboard_admin/membres/personne/modifypersonne.html',type="personne")
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/modifypersonne.html') """
 
 def addcentre(request):
 	if request.method == 'POST':
 		form = centreFormationForm(request.POST)
 	else:
 		form = centreFormationForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html',type="centre")
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html')
 
 def modifycentre(request,modify_id):
 	centre = get_object_or_404(Centre_formation , id=modify_id )
@@ -253,9 +285,9 @@ def modifycentre(request,modify_id):
 		form = centreFormationForm(request.POST,instance=centre)
 	else:
 		form = centreFormationForm(instance=centre)
-	return save_all_memb(request,form,'dashboard_admin/membres/centre/modifycentre.html',type="centre")
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/modifycentre.html')
 
-def deletepers(request,delete_id):
+""" def deletepers(request,delete_id):
 	data = dict()
 	personne = get_object_or_404(Personne , id=delete_id)
 
@@ -269,7 +301,7 @@ def deletepers(request,delete_id):
 		'personne':personne,
 		}
 		data['html_form'] = render_to_string('dashboard_admin/membres/personne/deletepersonne.html',context,request=request)
-	return JsonResponse(data)
+	return JsonResponse(data) """
 
 def deletecentr(request,delete_id):
 	data = dict()
@@ -551,12 +583,11 @@ def exportetablissement(request):
 #------------------- Dashboard Member views ----------------------------------------------------------------------------
 @unauthenticated_user
 def activity_show(request):
-    #code here
-    return render(request,'dashboard_membre/activitydetail.html')
+    activity = Activite.objects.filter(membres=request.user.id)
+    return render(request,'dashboard_membre/myactivity.html',{'activity':activity})
 
 @unauthenticated_user
 def badge_qrcode(request):
-    #code here
     return render(request,'dashboard_membre/badge.html')
 
 

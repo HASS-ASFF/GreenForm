@@ -73,3 +73,10 @@
     //delete
     $('#act-table').on("click",".show-form-delete",ShowForm);
     $('#modal-act').on("submit",".delete-form",SaveForm);
+
+	//participate
+	$('#act-table').on("click",".form-participate",ShowForm);
+	$('#modal-act').on("submit",".act-form-part",SaveForm);
+
+	//view details
+	$('#act-table').on("click",".form-details",ShowForm);

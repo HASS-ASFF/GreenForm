@@ -27,9 +27,9 @@
  			success: function(data){
  				if(data.form_is_valid){
  					$('#modal-membre').modal('hide');
-                     setTimeout(function(){
+                      setTimeout(function(){
                                  location.reload(); 
-                            }, 50); 
+                            }, 50);  
                     
  				} else {					
  					$('#modal-membre .modal-content').html(data.html_form)
@@ -78,11 +78,11 @@ $('#modal-membre').on("submit",".update-form-pers",SaveForm_membre);
 
 // add
 $(".show-form-centr").click(ShowForm_membre);
-$("#modal-membre").on("submit",".create-form-centr",SaveForm_membre);
+$("#modal-membre").on("submit",".create-form-centre",SaveForm_membre);
 
 // update
 $('#centr-table').on("click",".show-form-update",ShowForm_membre);
-$('#modal-membre').on("submit",".update-form-centr",SaveForm_membre);
+$('#modal-membre').on("submit",".update-form-centre",SaveForm_membre);
 
 // delete
  $('#centr-table').on("click",".show-form-delete",ShowForm_membre);

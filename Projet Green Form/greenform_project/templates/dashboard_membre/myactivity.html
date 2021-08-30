@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+
+<style>
+    .btn,button{
+        border-radius: 20px;
+        color: #469612;
+        cursor: pointer;
+        background-color: white;
+        text-decoration: none !important;
+    }
+
+    .exportcsv{
+        color: #469612;
+    }
+
+    .exportcsv:hover{
+        color: #469612;
+    }
+
+    .form-details{
+       border:1px solid #469612;
+       color:#469612;
+    }
+ </style>
+
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-calendar"></i>
+                Vos Activités
+            </h1>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="col-md-12">
+        <div class="tile">
+            <!-- Membre list -->
+            <div class="tile-title">
+                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_activite' %}">Exporter</a></button>
+                </div>
+                <div class="table-responsive">
+                          <table class="table" id="act-table">
+                              <thead>
+                                  <tr>
+                                      <th>Nom</th>
+                                      <th>Description</th>
+                                      <th>Date</th>
+                                      <th></th>       
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                 {% for a in activity %}
+                                 <tr>
+                                    <td>{{ a.nom  }}</td>
+                                    <td>{{ a.desc }}</td>
+                                    <td>{{ a.date }}</td>
+                                    <td><button style="border-radius: 25px;" class="btn  form-details" data-url="{% url 'actdetails' act_id=a.id %}"  >
+                                        Voir en détail
+                                  </button></td>
+                                </tr>
+                                 {% endfor %}
+                              </tbody>
+                          </table>
+                  </div>  
+    
+                {% if not activity|length_is:"0" %} 
+                <!--Pagination-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    
+                    {% for i in activity_admin.paginator.page_range %}
+                        {% if activity_admin.number == i %}
+                        <li class="page-item active" aria-current="page">
+                            <span style="background-color: #469612;" class="page-link">
+                            {{ i }}
+                            <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        {% else %}
+                        <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    </ul>
+                </nav>
+                <!--end of Pagination-->
+                {% endif %}
+        </div>
+    </div>        
+</main>
+
+<div class="modal fade" id="modal-act">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+{% endblock  %}

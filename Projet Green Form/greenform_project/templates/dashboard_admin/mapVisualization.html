@@ -2,14 +2,15 @@
 
 {% block 'content' %}
 <main class="app-content">
-    <div style="margin-bottom: 50px;" class="app-title">
+    <div  class="app-title">
         <div>
             <h1>
                 Visualisation des Espaces verts
             </h1>
         </div>
     </div>
-    <div style="width: 70%;height: 80%;margin: 0 auto;" class="tile">
+    <div class="col-md-12">
+    <div style="width: 80%;height: 85%;margin: 0 auto;" class="tile">
         <div class="tile-body">
            {{ map|safe }}
         </div>

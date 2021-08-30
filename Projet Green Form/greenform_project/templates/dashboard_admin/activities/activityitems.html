@@ -1,16 +1,37 @@
-{% for a in activity  %}
-<tr>
-    <th scope="row">{{ a.nom }}</th>
-        <td>{{ a.desc }}</td>
-        <td>{{ a.date }}</td>
-       
-        {% if request.user.is_superuser %} 
-        <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="{% url 'modifyactivity' modify_id=a.id %}">
-           <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit" ></i>
-        </button></td>
-        <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="{% url 'deleteactivity' delete_id=a.id %}">
-           <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
-        </button></td>
-        {% endif %}
-</tr>
+
+{% if request.user.is_superuser %} 
+{% for a in activity_admin  %}
+   <tr>
+      <td scope="row">{{ a.nom }}</td>
+         <td>{{ a.desc }}</td>
+         <td>{{ a.date }}</td>
+         
+         
+         <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="{% url 'modifyactivity' modify_id=a.id %}">
+            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit" ></i>
+         </button></td>
+         <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="{% url 'deleteactivity' delete_id=a.id %}">
+            <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
+         </button></td>
+   </tr>
 {% endfor %}
+
+{% else %}
+        <style>
+           .form-participate{
+              border:1px solid #469612;
+              color:#469612;
+           }
+        </style>
+        {% for a in activity_membre  %}
+            <tr>
+            <td scope="row">{{ a.nom }}</td>
+                <td>{{ a.desc }}</td>
+                <td>{{ a.date }}</td>
+                     
+            <td><button style="border-radius: 25px;" class="btn form-participate" data-url="{% url 'participate' act_id=a.id %}"  >
+                  Participer
+            </button></td> 
+            </tr>
+         {% endfor %}
+{% endif %}

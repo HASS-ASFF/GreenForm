@@ -147,6 +147,7 @@ class ActiviteForm(ModelForm):
     class Meta:
         model = Activite
         fields = '__all__'
+        exclude = ['membres']
 
 class PartenaireForm(ModelForm):
     class Meta:

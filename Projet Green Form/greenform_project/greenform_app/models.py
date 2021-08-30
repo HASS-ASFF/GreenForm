@@ -200,10 +200,10 @@ class Etablissement(models.Model):
 class Activite(models.Model):
     nom = models.CharField(max_length=30)
     desc = models.CharField(max_length=100)
-    membres = models.ManyToManyField(Membre,related_name='Participation')
+    membres = models.ManyToManyField(Membre,related_name='Participation',blank=True)
     id_partenaire = models.ForeignKey(Partenaire,on_delete=models.CASCADE)
     id_etablissement = models.ForeignKey(Etablissement,on_delete=models.CASCADE)
     date = models.DateField()
 
-    # def __str__(self):
-    #     return self.nom
+    def __str__(self):
+        return self.nom

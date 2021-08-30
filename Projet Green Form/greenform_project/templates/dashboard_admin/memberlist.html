@@ -35,7 +35,7 @@
               <div class="tile-title">
                 <h4 style="color: #222d32;">Personnes</h4>
                 {% if request.user.is_superuser %} 
-                <button class="btn show-form-pers" data-url="{% url 'addpersonne' %}">Ajouter</button>
+                <button class="btn show-form-pers" data-url="#">Ajouter</button>
                 {% endif %}
                 <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_membre' type="personne" %}">Exporter</a></button>
               </div>
@@ -47,6 +47,7 @@
                                         <th>Prenom</th>
                                         <th>Sexe</th>
                                         <th>Date d'inscription</th>
+                                        <th></th>
                                         <th></th>
                                                                                                     
                                     </tr>
@@ -98,6 +99,7 @@
                                       <th>Responsable</th>
                                       <th>Nom du centre</th>
                                       <th>Date d'inscription</th>
+                                      <th></th>
                                       <th></th>
                                       
                                   

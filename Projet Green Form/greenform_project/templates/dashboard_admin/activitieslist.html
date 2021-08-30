@@ -21,81 +21,153 @@
 </style>
 
 
-<main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1>
-                <i class="fa fa-calendar"></i>
-                Liste des Activités
-            </h1>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-       
-        <div class="col-md-12">
-              <div class="tile">
-              <div class="tile-title">
-                {% if request.user.is_superuser %}   
-                <button class="btn show-form" data-url="{% url 'addactivity' %}" >Ajouter</button>
-                {% endif %}
-                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_activite' %}">Exporter</a></button>
-              </div>
-                  <div class="table-responsive">
-                            <table class="table" id="act-table">
-                                <thead>
-                                    <tr>
-                                        <th>Nom</th>
-                                        <th>Description</th>
-                                        <th>Date</th>
-                                        
-                                    
-                                        <th></th>
-                                        <th></th>
-                                                            
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   {% include 'dashboard_admin/activities/activityitems.html' %}
-                                </tbody>
-                            </table>
-                    </div>  
-                    {% if not activity|length_is:"0" %} 
-                                <!--Pagination-->
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                        
-                        {% for i in activity.paginator.page_range %}
-                            {% if activity.number == i %}
-                            <li class="page-item active" aria-current="page">
-                                <span style="background-color: #469612;" class="page-link">
-                                {{ i }}
-                                <span class="sr-only">(current)</span>
-                                </span>
-                            </li>
-                            {% else %}
-                            <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        </ul>
-                    </nav>
-                    <!--end of Pagination-->
-                    {% endif %}
+
+              
+        {% if request.user.is_superuser %}   <!-- Admin list -->
+        <main class="app-content">
+            <div class="app-title">
+                <div>
+                    <h1>
+                        <i class="fa fa-calendar"></i>
+                        Liste des Activités
+                    </h1>
+                </div>
             </div>
-            
+        
+            <div class="clearfix"></div>
+               
+                <div class="col-md-12">
+                    <div class="tile">
+                <div class="tile-title">
+                <button class="btn show-form" data-url="{% url 'addactivity' %}" >Ajouter</button>
+
+                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_activite' %}">Exporter</a></button>
+                </div>
+                <div class="table-responsive">
+                          <table class="table" id="act-table">
+                              <thead>
+                                  <tr>
+                                      <th>Nom</th>
+                                      <th>Description</th>
+                                      <th>Date</th>
+                                      
+                                  
+                                      <th></th>
+                                      <th></th>
+                                                          
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                 {% include 'dashboard_admin/activities/activityitems.html' %}
+                              </tbody>
+                          </table>
+                  </div>  
+          
+                {% if not activity|length_is:"0" %} 
+                <!--Pagination-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    
+                    {% for i in activity_admin.paginator.page_range %}
+                        {% if activity_admin.number == i %}
+                        <li class="page-item active" aria-current="page">
+                            <span style="background-color: #469612;" class="page-link">
+                            {{ i }}
+                            <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        {% else %}
+                        <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    </ul>
+                </nav>
+                <!--end of Pagination-->
+                {% endif %}
         </div>
+        </div>
+    </main>    
 
-</main>
+{% else %} <!-- Membre list -->
+        <main class="app-content">
+            <div class="app-title">
+                <div>
+                    <h1>
+                        <i class="fa fa-calendar"></i>
+                        Activités Disponible
+                    </h1>
+                </div>
+            </div>
+        
+            <div class="clearfix"></div>
 
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert alert-{% if message.tags == error %}danger{% else %}{{message.tags}} {% endif %} alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+               
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title">
+                <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_activite' %}">Exporter</a></button>
+                </div>
+                <div class="table-responsive">
+                      <table class="table" id="act-table">
+                          <thead>
+                              <tr>
+                                  <th>Nom</th>
+                                  <th>Description</th>
+                                  <th>Date</th>
+                                  <th></th>
+                                                      
+                              </tr>
+                          </thead>
+                          <tbody>
+                             {% include 'dashboard_admin/activities/activityitems.html' %}
+                          </tbody>
+                      </table>
+                </div>  
+
+            {% if not activity|length_is:"0" %} 
+            <!--Pagination-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                
+                {% for i in activity_admin.paginator.page_range %}
+                    {% if activity_admin.number == i %}
+                    <li class="page-item active" aria-current="page">
+                        <span style="background-color: #469612;" class="page-link">
+                        {{ i }}
+                        <span class="sr-only">(current)</span>
+                        </span>
+                    </li>
+                    {% else %}
+                    <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+                </ul>
+            </nav>
+            <!--end of Pagination-->
+            {% endif %}
+
+        </div>
+        </div>
+    </main>    
+{% endif %}
+    
 <div class="modal fade" id="modal-act">
     <div class="modal-dialog">
         <div class="modal-content"></div>
     </div>
 </div>
-
-<!-- Optional Javascript -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 {% endblock  %}
