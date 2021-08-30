@@ -1,4 +1,5 @@
 from django.core import paginator
+from django.db.models.aggregates import Max
 from django.shortcuts import render,get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -10,16 +11,18 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 import folium
 import xlwt
-
+from django.contrib.auth import update_session_auth_hash
+from django.db.models import Count, Max
+import json
 
 #---------------------Login and Register view------------------------------------------------------------
 
-@unauthenticated_user
+
 def loginRegister(request):
 
 	saved = False
@@ -53,7 +56,7 @@ def loginRegister(request):
 		user = authenticate(request,username=username, password=password)
 		if user is not None:
 			login(request, user)
-			return redirect('home_membre')
+			return redirect('index')
 		else:
 			messages.info(request, 'Nom d\'utilisateur ou mot de passe incorrecte')
 	context = {
@@ -64,40 +67,68 @@ def loginRegister(request):
 	return render(request, 'login_register/login_register.html', context)
 
 def logoutUser(request):
-    logout(request)
-    return redirect('loginRegister')
+	logout(request)
+	return redirect('loginRegister')
+
+@unauthenticated_user
+def home(request):
+	
+	context = {
+		'test' : 'testino'
+	}
+	return render(request,'index.html', context)
 
 #-------------------Dashboard Admin views---------------------------------------------------------------------
 
-def home_admin(request):
-    #code here
-    return render(request,'dashboard_admin/index.html')
-
+@unauthenticated_user
 def profil_admin(request):
 	member = Membre.objects.get(username=request.user.username)
-	if request.POST == 'POST':
-		memberForm = MemberForm(request.POST, request.FILE, instance=member)
+	if request.method == 'POST':
+		memberForm = MemberForm(request.POST, request.FILES, instance=member)
 		if memberForm.is_valid():
+	  
+		
 			memberForm.save()
 			messages.info(request, 'Profil Modifié avec succée !')
 		else:
 			messages.error(request, 'Une erreur est survenu !')
+	
+		response = {
+			'data_is_valid' : True
+		}
+		return JsonResponse(response)
+
+
 	else:
 		memberForm = MemberForm(instance=member)
-
-	context = {
-		'memberForm' : memberForm
-	}
- 
-	return render(request,'dashboard_admin/profil.html', context)
+  
+  
+		context = {
+			'memberForm' : memberForm
+		}
+		return render(request,'dashboard_admin/profil.html', context)
 
 
 def resetPassword(request):
-    context = {}
-    return render(request, 'dashboard_admin/reset-password.html', context)
+	if request.method == 'POST':
+		formPassword = PasswordChangeCustomForm(request.user, request.POST)
+		
+		if formPassword.is_valid():
+			user = formPassword.save()
+			update_session_auth_hash(request, user)  # Important!
+			messages.success(request, 'Votre mot de passe a été bien changer')
+			return redirect('logout')
+		else:
+			messages.error(request, 'Veuillez corriger les erreurs ci dessous')
+	formPassword = PasswordChangeCustomForm(request.user)
+	context = {
+		'formPassword' : formPassword,
+	} 
+	return render(request, 'dashboard_admin/reset-password.html', context)
 
 #----------------------------------------ACTIVITY------------------------------------------------------
 
+@unauthenticated_user
 def activitylist(request):
 	activity = Activite.objects.all()
 	paginator = Paginator(activity,4)
@@ -105,8 +136,8 @@ def activitylist(request):
 	page_obj = paginator.get_page(pages)
 
 	context = {
-        'activity' : page_obj,
-    }
+		'activity' : page_obj,
+	}
 	return render(request,'dashboard_admin/activitieslist.html',context)
 
 def save_all_act(request,form,template_name):
@@ -166,7 +197,7 @@ def exportetactivity(request):
 	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
 	
 	
-    # Sheet header, first row
+	# Sheet header, first row
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -178,7 +209,7 @@ def exportetactivity(request):
 	
 	for col_num in range(len(columns)):
 		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
-    # Sheet body, remaining rows
+	# Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
 	style = xlwt.XFStyle()
@@ -198,6 +229,7 @@ def exportetactivity(request):
 	return response
 
 #----------------------------------------MEMBRES---------------------------------------------------
+@unauthenticated_user
 def memberslist(request):
 	personne = Personne.objects.all()
 	paginator_pers = Paginator(personne,4)
@@ -210,11 +242,66 @@ def memberslist(request):
 	page_centr = paginator_centr.get_page(pages_c)
 
 	context = {
-        'personne':page_pers,
+		'personne':page_pers,
 		'centre':page_centr,
-    }
+	}
 
 	return render(request,'dashboard_admin/memberlist.html',context)
+
+def save_all_memb(request,form,template_name,type):
+	data = dict()
+	if request.method == "POST":
+		if form.is_valid():
+			form.save()
+			data['form_is_valid']=True
+			if type == "centre":
+				user_group = Group.objects.get(id=request.POST.get("group")) 
+				form.groups.add(user_group)
+				centre = Centre_formation.objects.all()
+				data['memberslist'] = render_to_string('dashboard_admin/membres/centre/centreitems.html',{'centre': centre})
+			else:
+				user_group = Group.objects.get(id=request.POST.get("group")) 
+				form.groups.add(user_group)
+				personne = Personne.objects.all()
+				data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',{'personne': personne})	
+	else:
+		data['form_is_valid']=False
+	
+	context={
+		'form': form,
+	}
+	data['html_form'] = render_to_string(template_name,context,request)
+	return JsonResponse(data)
+
+def addpersonne(request):
+	if request.method == 'POST':
+		form = PersonneForm(request.POST)
+	else:
+		form = PersonneForm()
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html',type="personne")
+
+def modifypersonne(request,modify_id):
+	personne = get_object_or_404(Personne , id=modify_id )
+	if request.method == 'POST':
+		form = PersonneForm(request.POST,instance=personne)
+	else:
+		form = PersonneForm(instance=personne)
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/modifypersonne.html',type="personne")
+
+def addcentre(request):
+	if request.method == 'POST':
+		form = centreFormationForm(request.POST)
+	else:
+		form = centreFormationForm()
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html',type="centre")
+
+def modifycentre(request,modify_id):
+	centre = get_object_or_404(Centre_formation , id=modify_id )
+	if request.method == 'POST':
+		form = centreFormationForm(request.POST,instance=centre)
+	else:
+		form = centreFormationForm(instance=centre)
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/modifycentre.html',type="centre")
 
 def deletepers(request,delete_id):
 	data = dict()
@@ -254,9 +341,8 @@ def exportmembre(request,type):
 	
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+	ws = wb.add_sheet('Users Data') 
 
-    # Sheet header, first row
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -272,9 +358,8 @@ def exportmembre(request,type):
 		response['Content-Disposition'] = 'attachment; filename="Liste Centre de formation.xls"'
 
 	for col_num in range(len(columns)):
-		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+		ws.write(row_num, col_num, columns[col_num], font_style)  
 
-    # Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
 	
@@ -288,22 +373,23 @@ def exportmembre(request,type):
 	return response
 
 #----------------------------------------ABONNEMENTS-----------------------------------------------------
+@unauthenticated_user
 def abonnementList(request):
-	abonnements = Adherent.objects.all()
-	paginator = Paginator(abonnements,4)
-	pages = request.GET.get('page')
-	page_obj = paginator.get_page(pages)
+	listAdherentByAbonnement = Membre.objects.values('username', 'id').annotate(abonnement_count=Count('adherent__id_membre'), last_abonnement=Max('adherent__date_abonnement')).exclude(abonnement_count=0)	
+	context = {
+		'listAdherent' : listAdherentByAbonnement
+	}
+	
 
-	return render(request, 'dashboard_admin/abonnementList.html',{'abonnement':page_obj})
+	return render(request, 'dashboard_admin/abonnementList.html', context)
 
 def exportabonnement(request):
 	response = HttpResponse(content_type='application/ms-excel')
 	response['Content-Disposition'] = 'attachment; filename="Liste Adhérants.xls"'
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+	ws = wb.add_sheet('Users Data') 
 
-    # Sheet header, first row
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -313,9 +399,8 @@ def exportabonnement(request):
 	rows = Adherent.objects.all().values_list('id_inscription', 'date_abonnement', 'id_abonnement')
 	
 	for col_num in range(len(columns)):
-		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+		ws.write(row_num, col_num, columns[col_num], font_style) 
 
-    # Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
 	
@@ -327,7 +412,36 @@ def exportabonnement(request):
 	wb.save(response)
 
 	return response
+
+def abonnementPack(request):
+	
+	if request.method == "POST":
+		adherentForm = AdherantForm(request.POST)
+		if adherentForm.is_valid():
+			adherentForm.save()
+			messages.info(request, 'Votre abonnement a été bien effectué !')
+		else:
+			messages.error(request, 'Something went wrong !')
+	
+	else:
+		adherentForm = AdherantForm()
+	
+	listAbonnementByAdherent = Adherent.objects.filter(id_membre = request.user.id)
+	context = {
+	 'adherentForm' : adherentForm,
+	 'listAbonnementByAdherent' : listAbonnementByAdherent,
+	 }
+	return render(request, 'dashboard_admin/abonnementPacks.html', context)
+
+def countAbonnement(request):
+	count_abonnement = Adherent.objects.filter(id_membre = request.user.id).count()
+	context = {
+     	'count_abonnement' : count_abonnement
+    }
+	return context
+
 #----------------------------------------PARTNERS-----------------------------------------------------------
+@unauthenticated_user
 def partnersList(request):
 	partenaires = Partenaire.objects.all()
 	paginator = Paginator(partenaires,4)
@@ -368,7 +482,6 @@ def modifypartenaire(request,modify_id):
 		form = PartenaireForm(instance=partenaire)
 	return save_all_act(request,form,'dashboard_admin/partenaires/modifypart.html')
 
-
 def deletepartenaire(request,delete_id):
 	data = dict()
 	partenaire = get_object_or_404(Partenaire , id=delete_id)
@@ -390,9 +503,8 @@ def exportpartenaire(request):
 	response['Content-Disposition'] = 'attachment; filename="Liste Partenaires.xls"'
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+	ws = wb.add_sheet('Users Data')
 
-    # Sheet header, first row
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -402,9 +514,8 @@ def exportpartenaire(request):
 	rows = Partenaire.objects.all().values_list('nom', 'adresse', 'code_postal', 'num_tel')
 	
 	for col_num in range(len(columns)):
-		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+		ws.write(row_num, col_num, columns[col_num], font_style) 
 
-    # Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
 	
@@ -418,6 +529,7 @@ def exportpartenaire(request):
 	return response
 
 #----------------------------------------MAPVIZUALISATION--------------------------------------------------
+@unauthenticated_user
 def mapVisualization(request):
 	map = folium.Map(location=[47,2],zoom_start=5)
 	map = map._repr_html_()
@@ -425,7 +537,7 @@ def mapVisualization(request):
 
 
 #---------------------Etablissement view -------------------------------------------------------------
-
+@unauthenticated_user
 def etablissementList(request):
 	etablissements = Etablissement.objects.all()
 	paginator = Paginator(etablissements,4)
@@ -488,9 +600,8 @@ def exportetablissement(request):
 	response['Content-Disposition'] = 'attachment; filename="Liste Etablissements.xls"'
 
 	wb = xlwt.Workbook(encoding='utf-8')
-	ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+	ws = wb.add_sheet('Users Data') 
 
-    # Sheet header, first row
 	row_num = 0
 
 	font_style = xlwt.XFStyle()
@@ -500,12 +611,10 @@ def exportetablissement(request):
 	rows = Etablissement.objects.all().values_list('representant','nom','type_etablissement', 'adresse', 'code_postal')
 	
 	for col_num in range(len(columns)):
-		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+		ws.write(row_num, col_num, columns[col_num], font_style) 
 
-    # Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
-	
 	for row in rows:
 		row_num += 1
 		for col_num in range(len(row)):
@@ -516,21 +625,19 @@ def exportetablissement(request):
 	return response
 
 #------------------- Dashboard Member views ----------------------------------------------------------------------------
-
-
-def home_membre(request):
-	return render(request,'dashboard_membre/index.html')
-
+@unauthenticated_user
 def activity_show(request):
-    #code here
-    return render(request,'dashboard_membre/activitydetail.html')
+	#code here
+	return render(request,'dashboard_membre/activitydetail.html')
 
+@unauthenticated_user
 def badge_qrcode(request):
-    #code here
-    return render(request,'dashboard_membre/badge.html')
+	#code here
+	return render(request,'dashboard_membre/badge.html')
 
 
 #----------------------------------------QRCODE------------------------------------------------------------
+@unauthenticated_user
 def Search_qrcode(request):
 	query = request.GET.get('query')
 	

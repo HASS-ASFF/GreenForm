@@ -4,11 +4,10 @@ from .views import *
 urlpatterns = [
     
     #-------------------- ADMIN DAHSBOARD
-    path('',home_admin,name='home_admin'),
+    path('',home,name='index'),
     
     path('login-register/',loginRegister,name='loginRegister'),
     path('logout/', logoutUser , name="logout"),
-    
     path('profil/',profil_admin,name='profil'),
     path('profil/reset-password', resetPassword, name='resetPassword'),
 
@@ -19,11 +18,16 @@ urlpatterns = [
     path('export/activite', exportetactivity, name='export_activite'),
 
     path('members-list/',memberslist,name='memberslist'),
+    path('personne-add/',addpersonne,name='addpersonne'),
+    path('centre-add/',addcentre,name='addcentre'),
+    path('personne-modify/<str:modify_id>',modifypersonne,name='modifypersonne'),
+    path('centre-modify/<str:modify_id>',modifycentre,name='modifycentre'),
     path('personne-delete/<str:delete_id>',deletepers,name='deletepersonne'),
     path('centre-delete/<str:delete_id>',deletecentr,name='deletecentre'),
     path('export/membre/<str:type>', exportmembre, name='export_membre'),
 
     path('abonnements-list/',abonnementList,name='abonnementList'),
+    path('abonnement/',abonnementPack,name='abonnementPack'),
     path('export/adherant', exportabonnement, name='export_adherant'),
 
     path('partenaires/',partnersList,name='partnersList'),
@@ -47,6 +51,5 @@ urlpatterns = [
     path('login-register/',loginRegister,name='loginRegister'),
 
     #-------------------- MEMBRE DAHSBOARD
-    path('index/',home_membre,name='home_membre'),
     path('badge-membre/',badge_qrcode,name='badge'),
 ]

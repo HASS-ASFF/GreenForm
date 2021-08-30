@@ -6580,6 +6580,8 @@ button.bg-dark:focus {
 
 .rounded-circle, .app-sidebar__user-avatar {
   border-radius: 50% !important;
+  width : 58px !important;
+  height : 58px !important;
 }
 
 .rounded-0 {
@@ -15260,6 +15262,7 @@ be a descendant of the grid when it is being dragged.
   right: 24px !important;
 }
 
+
 .label-type-search {
     margin-right: 12px;
 }
@@ -15268,4 +15271,16 @@ be a descendant of the grid when it is being dragged.
 .profil-pic {
 margin-left: 90px;
 
+}
+
+.help{
+color: #bc0000;
+
+}
+.account-adherent {
+float: right;
+position: relative;
+bottom: 30px;
+left: 15px;
+cursor : pointer;
 }

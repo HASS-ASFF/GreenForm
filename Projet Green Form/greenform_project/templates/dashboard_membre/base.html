@@ -99,7 +99,7 @@
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-      <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% static 'img/default.jpg' %}" alt="User Image">
+      <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% request.user.image_profil.url %}" alt="User Image">
         <div>
           <p class="app-sidebar__user-name">{{request.user.username}}</p>
           <p class="app-sidebar__user-designation">Membre</p>
@@ -146,6 +146,7 @@
     <script src="{% static 'js/jquery-3.2.1.min.js' %} "></script>
     <script src="{% static 'js/popper.min.js' %} "></script>
     <script src="{% static 'js/bootstrap.min.js' %} "></script>
+    <script src="{% static 'js/main.js' %} "></script>
     
     
     
@@ -177,6 +178,7 @@
       //Activate bootstrip tooltips
       $("[data-toggle='tooltip']").tooltip();
       // $(".app-sidebar")
+
 
     })();
 

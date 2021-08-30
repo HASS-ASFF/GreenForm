@@ -5,12 +5,15 @@
  		contentType= false
  		processData = false
  		var string = form.attr("data-url")
- 		
- 		
- 		data = form.serialize()
- 		contentType= "application/x-www-form-urlencoded; charset=UTF-8"
- 		processData = true
-
+ 		if(string.includes("modify")){
+			formData = new FormData(this);
+			data = formData
+		}
+		else {
+			data = form.serialize()
+			contentType= "application/x-www-form-urlencoded; charset=UTF-8"
+			processData = true
+		}
  		$.ajax({
 
  			url: form.attr('data-url'),
@@ -57,15 +60,30 @@
      });
  };
 
-// //--------------------------------------------MEMBRE(PERSONNE)
+// --------------------------------------------MEMBRE(PERSONNE)
 
+// add
+$(".show-form-pers").click(ShowForm_membre);
+$("#modal-membre").on("submit",".create-form-pers",SaveForm_membre);
 
-// //delete
+// update
+$('#pers-table').on("click",".show-form-update",ShowForm_membre);
+$('#modal-membre').on("submit",".update-form-pers",SaveForm_membre);
+
+// delete
  $('#pers-table').on("click",".show-form-delete",ShowForm_membre);
  $('#modal-membre').on("submit",".delete-form-pers",SaveForm_membre);
 
-// //--------------------------------------------MEMBRE(CENTRE)
+// --------------------------------------------MEMBRE(CENTRE)
 
-// //delete
+// add
+$(".show-form-centr").click(ShowForm_membre);
+$("#modal-membre").on("submit",".create-form-centr",SaveForm_membre);
+
+// update
+$('#centr-table').on("click",".show-form-update",ShowForm_membre);
+$('#modal-membre').on("submit",".update-form-centr",SaveForm_membre);
+
+// delete
  $('#centr-table').on("click",".show-form-delete",ShowForm_membre);
  $('#modal-membre').on("submit",".delete-form-centre",SaveForm_membre);

@@ -12,14 +12,7 @@ from django.utils.translation import gettext_lazy as _
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Membre
-        fields = ['username', 'email', 'password', 'image_profil']
-        password2 = forms.CharField(
-        label='Repeat password', widget=forms.PasswordInput) 
-        def clean_password2(self):
-            cd = self.cleaned_data
-            if cd['password'] != cd['password2']:
-                raise forms.ValidationError('Passwords do not match.')
-            return cd['password2']
+        fields = ['username', 'email', 'image_profil']
         
         def clean_email(self):
             email = self.cleaned_data['email']
@@ -30,15 +23,14 @@ class MemberForm(forms.ModelForm):
         
         def save(self, commit=True):
             user = super(MemberForm, self).save(commit=False)
-            user.set_password(self.cleaned_data["password"])
+            
             if commit:
                 user.save()
             return user
         widgets = {
                 'username' : forms.TextInput(attrs={'class': 'form-control'}),
-                'password' : forms.PasswordInput(attrs={'class': 'form-control mb-3'}),
                 'email' : forms.TextInput(attrs={'class':'form-control'}),
-                'password2' : forms.TextInput(attrs={'class': 'form-control'})
+                'image_profil' : forms.FileInput(attrs={'class': 'form-control'})
         }
         
 class PersonneForm(forms.ModelForm):
@@ -168,12 +160,6 @@ class centreFormationForm(forms.ModelForm):
 
 
 
-class AbonnementForm(ModelForm):
-    class Meta:
-        model = Adherent
-        fields = '__all__'
-       
-
 class ActiviteForm(ModelForm):
     class Meta:
         model = Activite
@@ -188,6 +174,20 @@ class EtablissementForm(ModelForm):
     class Meta:
         model = Etablissement
         fields = '__all__'
+        
+
+class PasswordChangeCustomForm(PasswordChangeForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(user, *args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control', 'placeholder': "Votre ancien mot passe"})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': "Votre nouveau mot passe"})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': "Répétez votre nouveau mot de passe"})
 
 
+
+class AdherantForm(ModelForm):
+    class Meta:
+        model = Adherent
+        fields = ['id_membre', 'id_abonnement']
 

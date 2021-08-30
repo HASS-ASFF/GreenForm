@@ -21,20 +21,11 @@ $(function() {
 		 $('.step-2').fadeOut();
 		 $('.step-1').fadeIn();
 	 })
-	//  $('.register-person-form').hide();
-	//  $('.register-formation_center-form').hide();
      $('.step-2').hide();
-		//$('#register-form-1').on('click',function(e){
+		
 			$('.type-membre').on('change', function(){
-				//$('.type-membre').find(":selected").val();
-				// $(".type-membre option").each(function(){
-					// if ($(this).text() == "B")
-					  //	$(this).attr("selected","selected");
-				  //});
-				//$(this).find("option:selected").removeAttr('selected');
-				// $(this).val()
 				var selectedValue = $(this).val();
-				console.log(selectedValue)
+				
 				if(selectedValue == 1 ){
 					$('.person-fields').hide();
 					$('.formation_center-fields').show();
@@ -47,9 +38,6 @@ $(function() {
 					$('.person-fields').show();
 					$('.person-fields-step-1').show()
 					$('.person-fields-step-2').hide();
-				}
-				else {
-					alert(selectedValue);
 				}
 			});
 		//});

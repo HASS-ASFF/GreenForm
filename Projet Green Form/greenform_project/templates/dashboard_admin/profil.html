@@ -1,5 +1,5 @@
-{% extends 'dashboard_admin/base.html' %}
-
+{% extends 'base.html' %}
+{% load static %}
 {% block 'content' %}
 
 <main class="app-content">
@@ -20,6 +20,8 @@
     {% endfor %}
 {% endif %}
 
+
+
     <div class="app-title">
         <div>
             <h1>
@@ -30,7 +32,19 @@
     </div>
     <div class="clearfix"></div>
     <div class="tile">
-    <form action="{% url 'profil' %}" method="POST">
+
+        {% if messages %}
+            {% for message in messages %}
+
+        <div class="alert alert-{% if message.tags == error %}danger{% else %}{{message.tags}} {% endif %} alert-dismissible fade show" role="alert">
+            <strong>Infos!</strong> {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    <form action="{% url 'profil' %}" method="POST" class="profil-form" enctype="multipart/form-data" data-url="{% url 'profil' %}">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-4">
@@ -39,13 +53,16 @@
                 <img style="border-radius:100px; border : 1px solid #000;" width="160" height="160" src="{{request.user.image_profil.url}}" class="profil-pic" alt="">
                 {% else %}
                 
-                <img style="border-radius:100px; border : 1px solid #000 " width="160" height="160" src="{{MEDIA_URL}}/default.jpeg" class="profil-pic" alt="">
+                <img style="border-radius:100px; border : 1px solid #000 " width="160" height="160" src="{% static 'img/default_img.webp' %}" class="profil-pic" alt="">
                 <label>Charger une nouvelle photo de profil</label>
                 {% endif %}
-                {% if request.user.image_profil %}
-                <label>Charger une autre photo de profil</label>
-                {% endif %}
-                {{memberForm.image_profil}} 
+                <div class="form-group">    
+                    {% if request.user.image_profil %}
+                        <label>Charger une autre photo de profil</label>
+                    {% endif %}
+                    {{memberForm.image_profil}} 
+                </div>
+               
             </div>
             </div>
             <div class="col-md-8">
@@ -67,13 +84,43 @@
 
         <div class="row">
             <div class="col-md-12">
-                <button type="submit" style="border-radius: 25px; border : 1px solid #469612 ; color : #469612" class="float-right btn show-img-qrpers">
-                    Mettre à jour
-                </button>
+                <input type="submit"  value="Mettre à jour" style="border-radius: 25px; border : 1px solid #469612 ; color : #469612" class="submit-profil float-right btn show-img-qrpers">
             </div>
         </div>
     </form>
 
 </div>
-</main>    
+</main>
+<script>
+    (function () {
+    $('.profil-form').on('submit', function(e){
+        e.preventDefault();
+        console.log('aliiiioooww')
+        /*
+        var form = $(this);
+        var data = new FormData(this);
+			 // var data = formData;
+        //var contentType= "application/octet-stream";
+        $.ajax({
+          url: form.attr('data-url'),
+          contentType: "application/octet-stream",
+          processData: false,
+          data : data,
+          type: form.attr('method'),
+          dataType: 'json',
+          cache : false,
+          enctype: 'multipart/form-data',
+          success: function(data){
+            setTimeout(function(){
+              location.reload(); 
+         }, 500); 
+          },
+          error: function() {
+            console.log('erroor !!!')
+          }
+        })
+        */
+      });
+    })
+</script>  
 {% endblock  %}
