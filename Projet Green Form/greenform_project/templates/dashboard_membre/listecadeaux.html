@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'content' %}
+
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1>
+                <i class="fa fa-gift"></i>
+                Liste des Cadeaux
+            </h1>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="tile pack-silver">
+            <div class="subscribe-title text-center">
+                <h3>STICKERS Logo (x30)</h3>
+            </div>
+            <div class="subscribe-icon text-center">
+                 <img src="{% static 'img/green-energy.png' %}">
+            </div>
+            <div class="subscribe-price text-center">
+                <span>5.99 €</span>
+            </div>
+            <div class="subscribe-btn text-center">
+                <button class="btn" data-toggle="modal" data-target="#">Acheter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+{% endblock %}

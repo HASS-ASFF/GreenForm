@@ -63,7 +63,7 @@
                           </table>
                   </div>  
           
-                {% if not activity|length_is:"0" %} 
+                {% if not activity_admin|length_is:"0" %} 
                 <!--Pagination-->
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
@@ -136,13 +136,13 @@
                       </table>
                 </div>  
 
-            {% if not activity|length_is:"0" %} 
+            {% if not activity_membre|length_is:"0" %} 
             <!--Pagination-->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                 
-                {% for i in activity_admin.paginator.page_range %}
-                    {% if activity_admin.number == i %}
+                {% for i in activity_membre.paginator.page_range %}
+                    {% if activity_membre.number == i %}
                     <li class="page-item active" aria-current="page">
                         <span style="background-color: #469612;" class="page-link">
                         {{ i }}

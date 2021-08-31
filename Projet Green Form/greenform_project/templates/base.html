@@ -5,7 +5,7 @@
   <head>
     <meta name="description" content="Dashboard of application Green-form">
 
-    {% block 'title' %}<title>Forma Green | Acceuil</title>{% endblock  %} 
+    {% block 'title' %}{% endblock  %} 
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +13,6 @@
     <link rel="icon" type="image/png" href="{% static 'img/green-energy.png' %}" />
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %} " />
-    <link el="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %} " />
     <!-- Font-icon css-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -64,7 +63,7 @@
     <!-- Navbar-->
     <header class="app-header">
     <a class="app-header__logo" href="{% url 'index' %}">
-    <div class="app-header__logo-img" ><img style="width:50%;height:auto;" src="{% static 'img/green-energy.png' %}" /></div><div class="text-logo">Forma Green</div></a>
+    <div class="app-header__logo-img" ><img style="width:50%;height:auto;" src="{% static 'img/green-energy.png' %}" /></div><div class="text-logo">Green Form</div></a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       
       <!-- Navbar Right Menu-->
@@ -139,7 +138,7 @@
           <ul class="treeview-menu">
             <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
             <li><a class="treeview-item" href="{% url 'abonnementPack' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Abonnement</a></li>
-            <li><a class="treeview-item" href="{% url 'badge' %}"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Mon Badge</a></li>
+            <li><a class="treeview-item" href="{% url 'badge' %}"><i style="padding-right:10px;" class="fa fa-id-badge"  aria-hidden="true"></i>Mon Badge</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -150,8 +149,8 @@
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-handshake"></i><span class="app-menu__label">Partenaires</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
-            <li><a class="treeview-item" href="{% url 'partnersList' %}"><i style="padding-right:10px;" class="fa fa-list" aria-hidden="true"></i>Listes des partenaires</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px;" class="fa fa-list" aria-hidden="true"></i>Listes des cadeaux</a></li>
+            <li><a class="treeview-item" href="{% url 'partnersList' %}"><i style="padding-right:10px;" class="fa fa-handshake" aria-hidden="true"></i>Listes des partenaires</a></li>
+            <li><a class="treeview-item" href="{% url 'gifts' %}"><i style="padding-right:10px;" class="fa fa-gift" aria-hidden="true"></i>Listes des cadeaux</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i style="padding-right:10px;" class="app-menu__icon fa fa-tree"></i><span class="app-menu__label">Espaces verts</span><i class="treeview-indicator fa fa-angle-right"></i></a>
