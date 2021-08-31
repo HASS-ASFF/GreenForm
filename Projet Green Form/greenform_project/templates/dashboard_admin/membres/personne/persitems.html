@@ -5,13 +5,13 @@
             <td>{{ m.prenom }}</td>
             <td>{{ m.sexe }}</td>
         
-            <td>{{ m.date_joined}}</td>
-
+            
             {% if request.user.is_superuser %} 
-            <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="#">
+            <td>{{ m.date_joined}}</td>
+            <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="{% url 'modifypersonne' modify_id=m.id %}">
                 <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit"></i>
                 </button></td>
-            <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
+            <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="{% url 'deletepersonne' delete_id=m.id %}">
             <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
             </button></td>
             {% endif %}

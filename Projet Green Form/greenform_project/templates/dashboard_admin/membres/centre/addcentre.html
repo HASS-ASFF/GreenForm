@@ -30,13 +30,24 @@
          </div>
 
       </div>
-
       <div class="row">
          <div class="col-md-12">
+            <label for="email">Email</label>
+            <div class="form-group">
+               {{form.email}}
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-6">
             <label for="nom_du_centre">Nom du centre</label>
             <div class="form-group">
                {{form.nom_du_centre}}
                </div>
+         </div>
+         <div class="col-md-6">
+            <label for="nom_du_centre">Type</label>
+            {{form.type}}
          </div>
          </div>
          <div class="row">
@@ -52,7 +63,6 @@
                {{form.code_postal}}
                </div>
          </div>
-
       </div>
       
       

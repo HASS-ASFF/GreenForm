@@ -285,57 +285,37 @@ def memberslist(request):
 
 def save_all_memb(request,form,template_name):
 	data = dict()
-	
 	if request.method == "POST":
 		if form.is_valid():
 			form.save()
 			data['form_is_valid']=True
-			centre = Centre_formation.objects.all()
-			
-			#data['memberslist'] = render_to_string('dashboard_admin/membres/personne/persitems.html',{'personne': personne})
-			data['memberslist'] = render_to_string('dashboard_admin/membres/personne/centreitems.html',{'centre': centre})	
-	else:
-		data['form_is_valid']=False
-	
-	context={
-		'form': form,
-	}
-	
-	print(data['form_is_valid'])
-	data['html_form'] = render_to_string(template_name,context,request)
+		else:
+			data['form_is_valid']=False
+			messages.error(request, 'Something went wrong !')	
+	else:	
+		context={
+			'form': form,
+			}
+		data['html_form'] = render_to_string(template_name,context,request)
 	return JsonResponse(data)
-
-""" def addpersonne(request):
+#----------- PERSONNE ----------#
+def addpersonne(request):
 	if request.method == 'POST':
 		form = PersonneForm(request.POST)
 	else:
 		form = PersonneForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html') """
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/addpersonne.html') 
 
-""" def modifypersonne(request,modify_id):
-	personne = get_object_or_404(Personne , id=modify_id )
+def modifypersonne(request,modify_id):
+	personne = Personne.objects.get(id=modify_id)
 	if request.method == 'POST':
 		form = PersonneForm(request.POST,instance=personne)
 	else:
 		form = PersonneForm(instance=personne)
-	return save_all_memb(request,form,'dashboard_admin/membres/personne/modifypersonne.html') """
+	return save_all_memb(request,form,'dashboard_admin/membres/personne/modifypersonne.html')
 
-def addcentre(request):
-	if request.method == 'POST':
-		form = centreFormationForm(request.POST)
-	else:
-		form = centreFormationForm()
-	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html')
 
-def modifycentre(request,modify_id):
-	centre = get_object_or_404(Centre_formation , id=modify_id )
-	if request.method == 'POST':
-		form = centreFormationForm(request.POST,instance=centre)
-	else:
-		form = centreFormationForm(instance=centre)
-	return save_all_memb(request,form,'dashboard_admin/membres/centre/modifycentre.html')
-
-""" def deletepers(request,delete_id):
+def deletepers(request,delete_id):
 	data = dict()
 	personne = get_object_or_404(Personne , id=delete_id)
 
@@ -349,7 +329,28 @@ def modifycentre(request,modify_id):
 		'personne':personne,
 		}
 		data['html_form'] = render_to_string('dashboard_admin/membres/personne/deletepersonne.html',context,request=request)
-	return JsonResponse(data) """
+	return JsonResponse(data) 
+
+#----------- END PERSONNE ----------#
+
+#----------- START CENTRE ------------#
+def addcentre(request):
+	if request.method == 'POST':
+		form = centreFormationForm(request.POST)
+		print(request.POST.get('email'))
+	else:
+		form = centreFormationForm()
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/addcentre.html')
+
+def modifycentre(request,modify_id):
+	centre = get_object_or_404(Centre_formation , id=modify_id )
+	if request.method == 'POST':
+		form = centreFormationForm(request.POST,instance=centre)
+		print(request.POST.get('username'))
+	else:
+		form = centreFormationForm(instance=centre)
+	return save_all_memb(request,form,'dashboard_admin/membres/centre/modifycentre.html')
+
 
 def deletecentr(request,delete_id):
 	data = dict()
@@ -366,6 +367,9 @@ def deletecentr(request,delete_id):
 		}
 		data['html_form'] = render_to_string('dashboard_admin/membres/centre/deletecentre.html',context,request=request)
 	return JsonResponse(data)
+
+
+#----------- END CENTER ----------- #
 
 
 def exportmembre(request,type):

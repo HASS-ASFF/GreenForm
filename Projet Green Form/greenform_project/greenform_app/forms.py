@@ -41,25 +41,12 @@ class PersonneForm(forms.ModelForm):
     password2 = forms.CharField(
         label='Repeat password', widget=forms.PasswordInput) 
 
-    def clean_username(self):
-        username = self.cleaned_data['username'].lower()
-        r = Personne.objects.filter(username=username)
-        if r.count():
-            raise forms.ValidationError("Username already exists")
-        return username
-
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords do not match.')
         return cd['password2']
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if Personne.objects.filter(email=email).exists():
-            raise forms.ValidationError(
-                'Please use another Email, that is already taken')
-        return email
     def save(self, commit=True):
         user = super(PersonneForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
@@ -106,25 +93,11 @@ class centreFormationForm(forms.ModelForm):
     password2 = forms.CharField(
         label='Repeat password', widget=forms.PasswordInput) 
 
-    def clean_username(self):
-        username = self.cleaned_data['username'].lower()
-        r = Centre_formation.objects.filter(username=username)
-        if r.count():
-            raise forms.ValidationError("Username already exists")
-        return username
-
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords do not match.')
         return cd['password2']
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if Centre_formation.objects.filter(email=email).exists():
-            raise forms.ValidationError(
-                'Please use another Email, that is already taken')
-        return email
     
     def save(self, commit=True):
         user = super(centreFormationForm, self).save(commit=False)
@@ -142,10 +115,10 @@ class centreFormationForm(forms.ModelForm):
         self.fields['password'].widget.attrs.update(
             {'class': 'form-control mb-3 password_center', 'placeholder': 'Password'})
         self.fields['password2'].widget.attrs.update(
-            {'class': 'form-control password2_center', 'placeholder': 'Repeat Password'})    
-    class Meta:
-        
-       
+            {'class': 'form-control password2_center', 'placeholder': 'Repeat Password'})
+
+    
+    class Meta:      
         model = Centre_formation
         fields = ['username','password','email', 'nom_du_centre','responsable', 'type', 'code_postal']
         widgets = {
@@ -157,8 +130,6 @@ class centreFormationForm(forms.ModelForm):
                 'type' : forms.Select(attrs={'class':'form-control type_center'}),
                 'code_postal' : forms.TextInput(attrs={'class':'form-control postal_code_center'})
         }
-
-
 
 class ActiviteForm(ModelForm):
     class Meta:

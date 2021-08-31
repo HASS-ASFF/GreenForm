@@ -4,9 +4,9 @@
        <th scope="row">{{ m.responsable }}</th>
            <td>{{ m.nom_du_centre }}</td>
        
-           <td>{{ m.date_joined }}</td>
-
+           
            {% if request.user.is_superuser %} 
+           <td>{{ m.date_joined }}</td>
            <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="{% url 'modifycentre' modify_id=m.id %}">
             <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit"></i>
             </button></td>

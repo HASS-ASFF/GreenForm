@@ -17,7 +17,7 @@
  		$.ajax({
 
  			url: form.attr('data-url'),
- 			contentType: contentType,
+ 			contentType: contentType,	
  			processData: processData,
  			data : data,
  			type: form.attr('method'),
@@ -63,7 +63,7 @@
 // --------------------------------------------MEMBRE(PERSONNE)
 
 // add
-$(".show-form-pers").click(ShowForm_membre);
+$(".show-form-pers").on('click', ShowForm_membre);
 $("#modal-membre").on("submit",".create-form-pers",SaveForm_membre);
 
 // update
@@ -77,7 +77,7 @@ $('#modal-membre').on("submit",".update-form-pers",SaveForm_membre);
 // --------------------------------------------MEMBRE(CENTRE)
 
 // add
-$(".show-form-centr").click(ShowForm_membre);
+$(".show-form-centr").on('click',ShowForm_membre);
 $("#modal-membre").on("submit",".create-form-centre",SaveForm_membre);
 
 // update

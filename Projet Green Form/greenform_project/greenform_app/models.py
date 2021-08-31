@@ -148,6 +148,8 @@ class Personne(Membre):
         self.qr_code.save(fname,File(buffer),save=False)
         canvas.close()
         super().save(*args, **kwargs)
+        
+   
 
 class Centre_formation(Membre):
     nom_du_centre = models.CharField(max_length=30)
