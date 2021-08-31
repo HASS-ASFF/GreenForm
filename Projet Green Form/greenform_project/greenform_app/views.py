@@ -73,9 +73,19 @@ def logoutUser(request):
 @unauthenticated_user
 def home(request):
 	
+ 
+ 
+	count_member = Membre.objects.count()
+	count_activity = Activite.objects.count()
+	count_partners = Partenaire.objects.count()
+	count_etablissement = Etablissement.objects.count()
+	
 	context = {
-		'test' : 'testino'
-	}
+		'count_member' : count_member,
+		'count_activity' : count_activity,
+		'count_partners' : count_partners,
+		'count_etablissement' : count_etablissement
+	} 
 	return render(request,'index.html', context)
 
 #-------------------Dashboard Admin views---------------------------------------------------------------------

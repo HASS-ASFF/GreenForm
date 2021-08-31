@@ -12,7 +12,7 @@
       <div class="app-title">
         <div>
           <h1><i class="fa fa-dashboard"></i> Tableau de bord</h1>
-          <p>Association Green-form</p>
+          <p>Association Forma Green</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -25,7 +25,7 @@
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
             <div class="info">
               <h4>Membres</h4>
-              <p><b>5</b></p>
+              <p><b>{{count_member}}</b></p>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
           <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
             <div class="info">
               <h4>Activités</h4>
-              <p><b>25</b></p>
+              <p><b>{{count_activity}}</b></p>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <div class="widget-small primary coloured-icon"><i class="icon fa fa-leaf fa-3x"></i>
             <div class="info">
               <h4>Espaces verts</h4>
-              <p><b>10</b></p>
+              <p><b>{{count_etablissement}}</b></p>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
           <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
             <div class="info">
               <h4>Partenaires</h4>
-              <p><b>500</b></p>
+              <p><b>{{count_partners}}</b></p>
             </div>
           </div>
         </div>
@@ -57,6 +57,20 @@
       {% else %}
       <p>membre index here</p>
       {% endif %}
+
+      <div class="tile">
+        <div class="tile-title">A propos de <span class="title-about-us">Forma Green</span></div>
+
+        <img src="{% static 'img/about-us-img.jpg' %}">
+        <div class="text-about-us col-md-5 float-right">
+          <p>
+            Forma-Green réintroduit les plantes dans les écoles, universités, écoles de formation, centres de formation,... 
+            Cette association permet à chaque membre de bénéficier de remises dans les commerces partenaires contre une participation permettant 
+            l'aménagement et l'entretien d'espaces verts. Forma-Green vous contacte pour que vous preniez en charge leur projet de numérisation 
+            du système de gestion des adhérents et des espaces verts.
+          </p>
+      </div>
+      </div>
     </main>
 
 {% endblock  %}

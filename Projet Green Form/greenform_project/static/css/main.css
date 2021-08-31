@@ -15284,3 +15284,17 @@ bottom: 30px;
 left: 15px;
 cursor : pointer;
 }
+
+.title-about-us{
+  font-family: 'Niconne';
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 50px;
+  color : #469612;
+}
+
+.text-about-us p {
+  font-size: 18px;
+  text-align: justify;
+  line-height: 180%;
+}
