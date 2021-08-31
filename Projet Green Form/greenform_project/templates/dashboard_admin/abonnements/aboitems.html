@@ -1,16 +1,23 @@
-{% for a in  abonnements %}
+{% load auth_extras %}
+{% for a in  listAdherent %}
+
 <tr>
-    <th scope="row">{{ a.id_inscription }}</th>
+    <!--<th scope="row">{{ a.id_inscription }}</th>
         <td>{{ a.id_abonnement }}</td>
-        <td>{{ a.date_abonnement }}</td>
+        <td>{{ a.date_abonnement }}</td> !-->
+        <td>{{a.username}}</td>
+        <td>{{a.abonnement_count}}</td>
+        <td>{{a.last_abonnement}}</td>
+        {# <td>{% addDays a.id 10  %}</td> #}
+       <!-- <td>{{a.member_username}}</td>-->
       
         {% if request.user.is_superuser %} 
-        <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="#">
-           <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit" ></i>
-        </button></td>
-        <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
-           <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
-        </button></td>
+            <td><button style="border-radius: 25px;" class="btn  show-form-update" data-url="#">
+               <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-edit" ></i>
+            </button></td>
+            <td><button style="border-radius: 25px;" class="btn  show-form-delete" data-url="#">
+               <i style="margin:0 auto; font-size: 22px; color: #469612;" class="fa fa-trash-o"></i>
+            </button></td>
         {% endif %}
 </tr>
 {% endfor %}

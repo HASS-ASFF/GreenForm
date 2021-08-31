@@ -69,21 +69,7 @@
       
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
-        <!--Notification Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
-          <ul class="app-notification dropdown-menu dropdown-menu-right">
-            <li class="app-notification__title">You have 4 new notifications.</li>
-            <div class="app-notification__content">
-                <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x text-success"></i><i class="fa fa-money fa-stack-1x fa-inverse"></i></span></span>
-                    <div>
-                      <p class="app-notification__message">Transaction complete</p>
-                      <p class="app-notification__meta">2 days ago</p>
-                    </div></a></li>
-              </div>
-            </div>
-            <li class="app-notification__footer"><a href="#">See all notifications.</a></li>
-          </ul>
-        </li>
+  
 
         <!-- User Menu-->
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
@@ -100,7 +86,7 @@
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
       {% if request.user.is_superuser %} 
-      <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% static 'img/default.jpg' %}" alt="User Image">
+      <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{{request.user.get_photo_url}}" alt="User Image">
         <div>
           <p class="app-sidebar__user-name">{{request.user.username}}</p>
           <p class="app-sidebar__user-designation">Administrateur</p>
@@ -134,9 +120,16 @@
         
       </ul>
       {% else %}
-      <div class="app-sidebar__user"><img style="width:20%;" class="app-sidebar__user-avatar" src="{% static 'img/default.jpg' %}" alt="User Image">
+
+      
+        <div class="app-sidebar__user">
+            <img style="width:20%;" class="app-sidebar__user-avatar" src="{{ request.user.get_photo_url }}" alt="User Image">
+            
         <div>
-          <p class="app-sidebar__user-name">{{request.user.username}}</p>
+          <p class="app-sidebar__user-name">{{request.user}}</p>
+         {% if count_abonnement != 0 %}
+         <img class="account-adherent" src="{% static 'img/tick-mark.png' %}" alt="Compte abonné">
+         {% endif %}
           <p class="app-sidebar__user-designation">Membre</p>
         </div>
       </div>
@@ -145,8 +138,8 @@
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Mon Association</span><i class="treeview-indicator fa fa-angle-right"></i></a>
           <ul class="treeview-menu">
             <li><a class="treeview-item" href="{% url 'memberslist' %}"><i style="padding-right:10px;" class="fa fa-address-card" aria-hidden="true"></i>Liste des membres</a></li>
-            <li><a class="treeview-item" href="{% url 'abonnementList' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Liste des abonnements</a></li>
-            <li><a class="treeview-item" href="#"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Mon Badge</a></li>
+            <li><a class="treeview-item" href="{% url 'abonnementPack' %}"><i style="padding-right:10px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>Abonnement</a></li>
+            <li><a class="treeview-item" href="{% url 'badge' %}"><i style="padding-right:10px; font-size: 20px;" class="fa fa-qrcode" aria-hidden="true"></i>Mon Badge</a></li>
           </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Activités</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -183,6 +176,7 @@
     <script src="{% static 'js/popper.min.js' %} "></script>
     <script src="{% static 'js/bootstrap.min.js' %} "></script>
 
+
   <!-- modal show & save form -->  
     <script src="{% static 'js/membre.js' %}"></script>
     <script src="{% static 'js/activity.js' %}"></script>
@@ -194,7 +188,7 @@
     
     
     <script>
-        (function () {
+        $(document).ready(function() {
       "use strict";
 
       var treeviewMenu = $('.app-menu');
@@ -204,6 +198,7 @@
         event.preventDefault();
         $('.app').toggleClass('sidenav-toggled')
         $(".app-sidebar__user-avatar").toggle()
+        $('.account-adherent').toggle()
       });
 
       // Activate sidebar treeview toggle
@@ -222,8 +217,70 @@
       $("[data-toggle='tooltip']").tooltip();
       // $(".app-sidebar")
 
-    })();
+      
+        $('.profil-form').on('submit', function(e){
+            e.preventDefault();
+            console.log('aliiiioooww')
+            let csrftoken = '{{ csrf_token }}'
+            var form = $(this);
+             var data = new FormData(this);
+            $.ajax({
+              url: form.attr('data-url'),
+              contentType: false,
+              processData: false,
+              headers:{'X-CSRFToken':csrftoken},
+              data : data,
+              type: form.attr('method'),
+              cache : false,
+              enctype: 'multipart/form-data',
+              success: function(data){
 
+                
+                setTimeout(function(){
+                  location.reload(); 
+              }, 500);
+              //alert(response);
+              //alert(data.msg);
+              },
+              error: function(xhr, errmsg, err) {
+                  console.log(xhr.status + ":" + errmsg)
+              }
+            })
+           return false;
+          });
+  
+
+
+    });
+
+    </script>
+
+    <script>
+      $(document).ready(function(){
+        $('#id_id_abonnement').hide();
+        $('#id_id_membre').hide();
+        $('.subscribe-btn .btn').on('click', function(e){
+            var msg = "<p>Est-ce que vous ete sur de vouloir choisir le <strong>"+$(this).parent().parent().children('.subscribe-title').text()+
+                      "</strong> qui vaut <strong>"+$(this).parent().parent().children('.subscribe-price').text()+"</strong>?</p>";
+            $('#subscribe-modal .modal-body').html(msg);
+            var packInfo = $(this).parent().parent().children('.subscribe-title').text();
+            var inputValue = 0;
+            if (packInfo.includes('BRONZE')){
+              inputValue = 1;
+            }
+            else
+              if(packInfo.includes('SILVER')){
+                inputValue = 2;
+              }
+            else{
+              inputValue = 3;
+            }
+            $('#id_id_abonnement').val(inputValue)
+        });
+        
+
+
+    })
     </script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="{% static 'js/plugins/pace.min.js' %} "></script>

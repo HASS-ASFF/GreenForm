@@ -9,6 +9,7 @@ urlpatterns = [
     path('login-register/',loginRegister,name='loginRegister'),
     path('logout/', logoutUser , name="logout"),
     path('profil/',profil_admin,name='profil'),
+    path('profil/reset-password', resetPassword, name='resetPassword'),
 
     path('activities-list/',activitylist,name='activitylist'),
     path('activities-add',addactivity,name='addactivity'),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('export/membre/<str:type>', exportmembre, name='export_membre'),
 
     path('abonnements-list/',abonnementList,name='abonnementList'),
+    path('abonnement/',abonnementPack,name='abonnementPack'),
     path('export/adherant', exportabonnement, name='export_adherant'),
 
     path('partenaires/',partnersList,name='partnersList'),

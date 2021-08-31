@@ -9,6 +9,29 @@ from django.contrib.auth.forms import *
 from django.utils.translation import gettext_lazy as _
 
 
+class MemberForm(forms.ModelForm):
+    class Meta:
+        model = Membre
+        fields = ['username', 'email', 'image_profil']
+        
+        def clean_email(self):
+            email = self.cleaned_data['email']
+            if Personne.objects.filter(email=email).exists():
+                raise forms.ValidationError(
+                    'Please use another Email, that is already taken')
+            return email
+        
+        def save(self, commit=True):
+            user = super(MemberForm, self).save(commit=False)
+            
+            if commit:
+                user.save()
+            return user
+        widgets = {
+                'username' : forms.TextInput(attrs={'class': 'form-control'}),
+                'email' : forms.TextInput(attrs={'class':'form-control'}),
+                'image_profil' : forms.FileInput(attrs={'class': 'form-control'})
+        }
         
 class PersonneForm(forms.ModelForm):
     username = forms.CharField(
@@ -137,12 +160,6 @@ class centreFormationForm(forms.ModelForm):
 
 
 
-class AbonnementForm(ModelForm):
-    class Meta:
-        model = Adherent
-        fields = '__all__'
-       
-
 class ActiviteForm(ModelForm):
     class Meta:
         model = Activite
@@ -158,6 +175,20 @@ class EtablissementForm(ModelForm):
     class Meta:
         model = Etablissement
         fields = '__all__'
+        
+
+class PasswordChangeCustomForm(PasswordChangeForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(user, *args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control', 'placeholder': "Votre ancien mot passe"})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': "Votre nouveau mot passe"})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': "Répétez votre nouveau mot de passe"})
 
 
+
+class AdherantForm(ModelForm):
+    class Meta:
+        model = Adherent
+        fields = ['id_membre', 'id_abonnement']
 

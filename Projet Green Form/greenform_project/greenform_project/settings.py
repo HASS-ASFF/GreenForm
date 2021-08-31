@@ -66,7 +66,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'greenform_app.views.countAbonnement'
             ],
+            'libraries':{
+                'auth_extras': 'greenform_app.templatetags.auth_extras',
+            }
         },
     },
 ]
@@ -87,6 +91,7 @@ DATABASES = {
         'PORT' : '3306',
     }
 }
+
 
 
 
@@ -142,3 +147,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'greenform_app.Membre'
+
+
+DATE_INPUT_FORMATS = ['%Y-%m-%d %H:%M, %p']

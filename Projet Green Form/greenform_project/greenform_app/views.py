@@ -1,4 +1,5 @@
 from django.core import paginator
+from django.db.models.aggregates import Max
 from django.shortcuts import render,get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -15,7 +16,9 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 import folium
 import xlwt
-
+from django.contrib.auth import update_session_auth_hash
+from django.db.models import Count, Max
+import json
 
 #---------------------Login and Register view------------------------------------------------------------
 
@@ -64,19 +67,64 @@ def loginRegister(request):
 	return render(request, 'login_register/login_register.html', context)
 
 def logoutUser(request):
-    logout(request)
-    return redirect('loginRegister')
+	logout(request)
+	return redirect('loginRegister')
 
 @unauthenticated_user
 def home(request):
-    return render(request,'index.html')
+	
+	context = {
+		'test' : 'testino'
+	}
+	return render(request,'index.html', context)
 
 #-------------------Dashboard Admin views---------------------------------------------------------------------
 
 @unauthenticated_user
 def profil_admin(request):
-    return render(request,'dashboard_admin/profil.html')
+	member = Membre.objects.get(username=request.user.username)
+	if request.method == 'POST':
+		memberForm = MemberForm(request.POST, request.FILES, instance=member)
+		if memberForm.is_valid():
+	  
+		
+			memberForm.save()
+			messages.info(request, 'Profil Modifié avec succée !')
+		else:
+			messages.error(request, 'Une erreur est survenu !')
+	
+		response = {
+			'data_is_valid' : True
+		}
+		return JsonResponse(response)
 
+
+	else:
+		memberForm = MemberForm(instance=member)
+  
+  
+		context = {
+			'memberForm' : memberForm
+		}
+		return render(request,'dashboard_admin/profil.html', context)
+
+
+def resetPassword(request):
+	if request.method == 'POST':
+		formPassword = PasswordChangeCustomForm(request.user, request.POST)
+		
+		if formPassword.is_valid():
+			user = formPassword.save()
+			update_session_auth_hash(request, user)  # Important!
+			messages.success(request, 'Votre mot de passe a été bien changer')
+			return redirect('logout')
+		else:
+			messages.error(request, 'Veuillez corriger les erreurs ci dessous')
+	formPassword = PasswordChangeCustomForm(request.user)
+	context = {
+		'formPassword' : formPassword,
+	} 
+	return render(request, 'dashboard_admin/reset-password.html', context)
 
 #----------------------------------------ACTIVITY------------------------------------------------------
 
@@ -196,7 +244,7 @@ def exportetactivity(request):
 	
 	for col_num in range(len(columns)):
 		ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
-    # Sheet body, remaining rows
+	# Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
 
 	style = xlwt.XFStyle()
@@ -229,9 +277,9 @@ def memberslist(request):
 	page_centr = paginator_centr.get_page(pages_c)
 
 	context = {
-        'personne':page_pers,
+		'personne':page_pers,
 		'centre':page_centr,
-    }
+	}
 
 	return render(request,'dashboard_admin/memberlist.html',context)
 
@@ -359,12 +407,13 @@ def exportmembre(request,type):
 #----------------------------------------ABONNEMENTS-----------------------------------------------------
 @unauthenticated_user
 def abonnementList(request):
-	abonnements = Adherent.objects.all()
-	paginator = Paginator(abonnements,4)
-	pages = request.GET.get('page')
-	page_obj = paginator.get_page(pages)
+	listAdherentByAbonnement = Membre.objects.values('username', 'id').annotate(abonnement_count=Count('adherent__id_membre'), last_abonnement=Max('adherent__date_abonnement')).exclude(abonnement_count=0)	
+	context = {
+		'listAdherent' : listAdherentByAbonnement
+	}
+	
 
-	return render(request, 'dashboard_admin/abonnementList.html',{'abonnement':page_obj})
+	return render(request, 'dashboard_admin/abonnementList.html', context)
 
 def exportabonnement(request):
 	response = HttpResponse(content_type='application/ms-excel')
@@ -395,6 +444,34 @@ def exportabonnement(request):
 	wb.save(response)
 
 	return response
+
+def abonnementPack(request):
+	
+	if request.method == "POST":
+		adherentForm = AdherantForm(request.POST)
+		if adherentForm.is_valid():
+			adherentForm.save()
+			messages.info(request, 'Votre abonnement a été bien effectué !')
+		else:
+			messages.error(request, 'Something went wrong !')
+	
+	else:
+		adherentForm = AdherantForm()
+	
+	listAbonnementByAdherent = Adherent.objects.filter(id_membre = request.user.id)
+	context = {
+	 'adherentForm' : adherentForm,
+	 'listAbonnementByAdherent' : listAbonnementByAdherent,
+	 }
+	return render(request, 'dashboard_admin/abonnementPacks.html', context)
+
+def countAbonnement(request):
+	count_abonnement = Adherent.objects.filter(id_membre = request.user.id).count()
+	context = {
+     	'count_abonnement' : count_abonnement
+    }
+	return context
+
 #----------------------------------------PARTNERS-----------------------------------------------------------
 @unauthenticated_user
 def partnersList(request):
@@ -436,7 +513,6 @@ def modifypartenaire(request,modify_id):
 	else:
 		form = PartenaireForm(instance=partenaire)
 	return save_all_act(request,form,'dashboard_admin/partenaires/modifypart.html')
-
 
 def deletepartenaire(request,delete_id):
 	data = dict()

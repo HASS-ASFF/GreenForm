@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 @receiver(post_save, sender=Membre)
 def create_admin(sender, instance, created, **kwargs):
-    if created and instance.is_superuser == False:
+    if created and instance.is_superuser == True:
         user_group = Group.objects.get(id=3)
         instance.groups.add(user_group)
         
