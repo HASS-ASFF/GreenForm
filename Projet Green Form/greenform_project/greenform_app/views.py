@@ -668,8 +668,22 @@ def activity_show(request):
 
 @unauthenticated_user
 def badge_qrcode(request):
-    return render(request,'dashboard_membre/badge.html')
 
+	if request.user.groups.filter(name='personne').exists():
+		personne = get_object_or_404(Personne, id=request.user.id )
+		centre = []
+	else:
+		centre = get_object_or_404(Centre_formation, id=request.user.id )
+		personne = []
+	context ={
+		'centre':centre,
+		'personne': personne,
+	}
+	
+	return render(request,'dashboard_membre/badge.html',context)
+
+def Gifts(request):
+	return render(request,'dashboard_membre/listecadeaux.html')
 
 #----------------------------------------QRCODE------------------------------------------------------------
 @unauthenticated_user

@@ -55,4 +55,5 @@ urlpatterns = [
     path('myactivity/',activity_show,name="myactivity"),
     path('actdetail/<str:act_id>',actdetails,name="actdetails"),
     path('participate/<str:act_id>',Participate,name='participate'),
+    path('listecadeaux/',Gifts,name="gifts"),
 ]

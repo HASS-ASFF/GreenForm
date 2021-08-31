@@ -1,32 +1,153 @@
 {% include 'base.html' %}
+{% load static %}
+
+{% block 'title' %}<title>Green Form | Badge Qr-code</title>{% endblock  %}
 
 {% block 'content' %}
 <style>
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+
+.container {
+  perspective: 2500px;
+}
+
+.card {
+  font-family: 'Open Sans', sans-serif;
+  background: white;
+  height: 300px;
+  width: 600px;
+  margin: 3em auto;
+  border-radius: .5em;
+  box-shadow: 0 2.5em .9em -2em #555;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  backface-visibility: hidden;
+  transition: transform .8s cubic-bezier(.63,-0.32,.4,1.39);
+}
+
+.card-flip {
+  transform: rotateY(180deg);
+}
+
+.initials {
+  display: inline-block;
+  font-size: 4em;
+  color: #333;
+  font-weight: 500;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  text-align: center;
+  border-bottom: 1px solid $red;
+  background-color:#469612;
+  color:white;
+}
+
+.initials-back {
+  font-size: 3em;
+  margin: .5em 0;
+  border-bottom: 1px solid;
+}
+
+.desc {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.contact {
+  text-align: center; 
+  font-weight: 300;
+  position: relative; 
+  margin: 2em 0 1em 0;
+}
+
+hr {
+  width: 100%;
+  display:block;
+  margin:0 auto;
+  background-color:black;
+}
+
+#click-me {
+  font-family: 'Open Sans', sans-serif;
+  color: #469612;
+  text-align:center;
+  animation: fade 3s infinite ease-in-out;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  
+  50% {
+    opacity: 0;
+  }
+   
+  100% {
+    opacity: 1;
+  }
+}
 </style>
- <!-- Ana li hankemel had la partie ok !-->
+
+ 
 <main class="app-content">
             <div class="app-title">
                 <div>
                     <h1>
-                        <i class="fa fa-calendar"></i>
-                        Mon badge
+                        <i class="fa fa-id-badge" ></i>
+                        Mon Badge
                     </h1>
                 </div>
+                
             </div>
-            
-    <div class="tile">
-        <div class="tile-body">
-            <div class="card__content">
-				<div>
-					<h2>Card One</h2>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-					<p><a href="#top" class="btn btn--accent">Read more</a></p>
-				</div>
-				<figure>
-					<img src="https://codyhouse.co/demo-tutorials/stacking-cards/assets/img/img-1.jpg" alt="Image description">
-				</figure>
-			</div>
+    <div class="clearfix"></div>
+    <h5 id="click-me"> Cliquez sur le Badge</h5>
+    <div class="container">
+        <div class="card card-front">
+            <div class="initials initial">
+            <img style="width:10%;" src="{% static 'img/green-energy.png' %}" />
+            <div style="font-family: 'Niconne';">Green Form</div> 
+            </div>
+            <hr>
+            <div style="text-align:center;color:#469612;margin-top:20px;"><h3>BADGE MEMBRE</h3></div>
+        </div> 
+        
+        {% if personne|length_is:0 %}
+        <div class="card card-back card-flip">
+        <div class="initials initials-back">{{centre.responsable}}</div>
+        <div class="desc">Responsable du centre <strong>{{centre.nom_du_centre}}</strong></div>
+        <div class="desc">Email: <strong>{{centre.email}}</strong></div>
+        <img style=" width:25%;display:block;margin:0 auto;" src="{{ centre.qr_code.url }}" />
         </div>
+        {% else %}
+        <div class="card card-back card-flip">
+        <div class="initials initials-back">{{personne.nom}} {{personne.prenom}}</div>
+        <div class="desc">Type: <strong>{{personne.type}}</strong></div>
+        <div class="desc"> Email: <strong>{{personne.email}}</strong></div>
+        <img style=" width:25%;display:block;margin:0 auto;" src="{{ personne.qr_code.url }}" />
+        </div>
+        {% endif %}
+       
     </div>
+  
 </main>
+
+<script>
+
+$('p').click(function(e) {
+  e.stopPropagation();
+});
+
+$('.card').click(function() {
+  $('.card-front').toggleClass('card-flip');
+  $('.card-back').toggleClass('card-flip');
+});
+</script>
 {% endblock  %}
