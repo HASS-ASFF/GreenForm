@@ -35,9 +35,6 @@
         <div class="col-md-12">
             <div class="tile">
               <div class="tile-title">
-                {% if request.user.is_superuser %} 
-                <button class="btn show-form" data-url="#">Ajouter</button>
-                {% endif %}
                 <button class="btn"><a class="exportcsv" style="text-decoration:none;" href="{% url 'export_adherant' %}">Exporter</a></button>
               </div>
                   <div class="table-responsive">
@@ -46,9 +43,7 @@
                                     <tr>
                                         <th>Membre</th>
                                         <th>Nombre d'abonnement</th>
-                                        <th>Date d'abonnement</th>                                    
-                                        <th></th>
-                                        <th></th>            
+                                        <th>Date d'abonnement</th>                                              
                                     </tr>
                                 </thead>
                                 <tbody>
