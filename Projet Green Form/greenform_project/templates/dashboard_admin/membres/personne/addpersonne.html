@@ -1,3 +1,5 @@
+
+{% load crispy_forms_tags %}
 <form method="POST" data-url="{% url 'addpersonne' %}" class="create-form-pers">
     {% csrf_token %}
     <div class="modal-header">
@@ -47,9 +49,7 @@
          </div>
 
       </div>
-
       
-
       <div class="row">
          <div class="col-md-6">
             <label for="nom">Nom</label>
@@ -103,3 +103,4 @@
        <button type="button" class="btn" data-dismiss="modal">Annuler</button>
     </div>
  </form>   
+ 

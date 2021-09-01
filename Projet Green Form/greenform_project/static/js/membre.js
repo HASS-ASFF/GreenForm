@@ -15,9 +15,8 @@
 			processData = true
 		}
  		$.ajax({
-
- 			url: form.attr('data-url'),
- 			contentType: contentType,	
+			url: form.attr('data-url'),
+			contentType: contentType,	
  			processData: processData,
  			data : data,
  			type: form.attr('method'),
