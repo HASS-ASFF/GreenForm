@@ -47,7 +47,6 @@
                                         <th>Membre</th>
                                         <th>Nombre d'abonnement</th>
                                         <th>Date d'abonnement</th>                                    
-                                        {# <th>Date de validite</th> #}
                                         <th></th>
                                         <th></th>            
                                     </tr>
@@ -57,13 +56,14 @@
                                 </tbody>
                             </table>
                     </div>     
-                {% if not abonnementPage|length_is:"0" %}    
+                
+                {% if not page_abonnement|length_is:"0" %}    
                  <!--Pagination-->
                  <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                     
-                    {% for i in abonnementPage.paginator.page_range %}
-                        {% if abonnementPage.number == i  %}
+                    {% for i in page_abonnement.paginator.page_range %}
+                        {% if page_abonnement.number == i  %}
                         <li class="page-item active" aria-current="page">
                             <span style="background-color: #469612;" class="page-link">
                             {{ i }}
@@ -71,7 +71,7 @@
                             </span>
                         </li>
                         {% else %}
-                        <li class="page-item"><a style="color: #469612;" class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        <li class="page-item"><a style="color: #469612;" class="page-link" href="?pageAbonnement={{ i }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
                     

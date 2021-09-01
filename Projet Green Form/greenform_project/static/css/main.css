@@ -15298,3 +15298,8 @@ cursor : pointer;
   text-align: justify;
   line-height: 180%;
 }
+
+.carousel-item img {
+  height: 150px !important; 
+  max-height: 150px !important;
+}

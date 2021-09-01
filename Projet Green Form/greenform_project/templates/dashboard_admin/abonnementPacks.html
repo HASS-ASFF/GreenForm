@@ -122,7 +122,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for listAbonnement in listAbonnementByAdherent %}
+                        {% for listAbonnement in page_adherent %}
                             <tr>
                                 <td>{{listAbonnement.id_abonnement.type_abonnement}}</td>
                                 <td>{{listAbonnement.date_abonnement|date:"Y-m-d H:i, A"}}</td>
@@ -134,6 +134,28 @@
                     </tbody>
                 </table>
             </div>
+            {% if not page_adherent|length_is:"0" %}    
+                 <!--Pagination-->
+                 <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    {% for i in page_adherent.paginator.page_range %}
+                        {% if page_adherent.number == i  %}
+                        <li class="page-item active" aria-current="page">
+                            <span style="background-color: #469612;" class="page-link">
+                            {{ i }}
+                            <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        {% else %}
+                        <li class="page-item"><a style="color: #469612;" class="page-link" href="?pagePacks={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </nav>
+                <!--end of Pagination-->  
+                {% endif %} 
+
+
         </div>
     </div>
 
