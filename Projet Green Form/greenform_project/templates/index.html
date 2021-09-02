@@ -19,42 +19,62 @@
           <li class="breadcrumb-item"><a href="{% url 'index' %}">Tableau de bord</a></li>
         </ul>
       </div>
-      {% if request.user.is_superuser %} 
-      <div class="row">
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-            <div class="info">
-              <h4>Membres</h4>
-              <p><b>{{count_member}}</b></p>
+      {# {% if request.user.is_superuser %}  #}
+      <div class="tile">
+        <div class="row">
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+              <div class="info">
+                <h4>Membres</h4>
+                <p><b>{{count_member}}</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
+              <div class="info">
+                <h4>Activités</h4>
+                <p><b>{{count_activity}}</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-small primary coloured-icon"><i class="icon fa fa-leaf fa-3x"></i>
+              <div class="info">
+                <h4>Espaces verts</h4>
+                <p><b>{{count_etablissement}}</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+              <div class="info">
+                <h4>Partenaires</h4>
+                <p><b>{{count_partners}}</b></p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small info coloured-icon"><i class="icon fa fa-thumbs-o-up fa-3x"></i>
-            <div class="info">
-              <h4>Activités</h4>
-              <p><b>{{count_activity}}</b></p>
-            </div>
-          </div>
+    </div>
+      {# {% else %} #}
+     <!-- <p>membre index here</p>-->
+      {# {% endif %} #}
+      <div class="tile">
+        <div class="tile-title">
+          Dernière activités
         </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small primary coloured-icon"><i class="icon fa fa-leaf fa-3x"></i>
-            <div class="info">
-              <h4>Espaces verts</h4>
-              <p><b>{{count_etablissement}}</b></p>
-            </div>
+        <div class="gallery">
+          <div class="gallery-container">
+            <img class="gallery-item gallery-item-1" src="{% static 'img/planted_trees/1.jpg' %}" data-index="1">
+            <img class="gallery-item gallery-item-2" src="{% static 'img/planted_trees/2.jpg' %}" data-index="2">
+            <img class="gallery-item gallery-item-3" src="{% static 'img/planted_trees/3.png' %}" data-index="3">
+            <img class="gallery-item gallery-item-4" src="{% static 'img/planted_trees/4.jpg' %}" data-index="4">
+            <img class="gallery-item gallery-item-5" src="{% static 'img/planted_trees/5.jpg' %}" data-index="5">
+            <img class="gallery-item gallery-item-5" src="{% static 'img/planted_trees/6.webp' %}" data-index="6">
           </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
-            <div class="info">
-              <h4>Partenaires</h4>
-              <p><b>{{count_partners}}</b></p>
-            </div>
-          </div>
+          <div class="gallery-controls"></div>
         </div>
       </div>
-      {% endif %}
 
       <div class="tile">
         <div class="tile-title">A propos de <span class="title-about-us">Forma Green</span></div>

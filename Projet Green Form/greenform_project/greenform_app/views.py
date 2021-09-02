@@ -422,8 +422,13 @@ def exportmembre(request,type):
 @unauthenticated_user
 def abonnementList(request):
 	listAdherentByAbonnement = Membre.objects.values('username', 'id').annotate(abonnement_count=Count('adherent__id_membre'), last_abonnement=Max('adherent__date_abonnement')).exclude(abonnement_count=0)	
+	paginator_abonnement = Paginator(listAdherentByAbonnement,4)
+	pages_abo = request.GET.get('pageAbonnement')
+	page_abonnement = paginator_abonnement.get_page(pages_abo)
+
 	context = {
-		'listAdherent' : listAdherentByAbonnement
+		'listAdherent' : listAdherentByAbonnement,
+		'page_abonnement' : page_abonnement
 	}
 	
 
@@ -473,9 +478,16 @@ def abonnementPack(request):
 		adherentForm = AdherantForm()
 	
 	listAbonnementByAdherent = Adherent.objects.filter(id_membre = request.user.id)
+ 
+	paginator_abonnement = Paginator(listAbonnementByAdherent,4	)
+	pages_abo = request.GET.get('pagePacks')
+	page_adherent = paginator_abonnement.get_page(pages_abo)
+
+	
 	context = {
 	 'adherentForm' : adherentForm,
-	 'listAbonnementByAdherent' : listAbonnementByAdherent,
+	#  'listAbonnementByAdherent' : listAbonnementByAdherent,
+ 	 'page_adherent' : page_adherent
 	 }
 	return render(request, 'dashboard_admin/abonnementPacks.html', context)
 
