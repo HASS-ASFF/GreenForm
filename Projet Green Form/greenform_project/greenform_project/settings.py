@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'greenform_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'GreenForm_db',
-        'USER' : 'root',
-        'PASSWORD' : 'root123',
-        'HOST' : 'localhost',
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'GreenForm_db', 
+        'USER' : 'root',  
+        'PASSWORD' : 'root123', 
+        'HOST' : 'localhost', 
         'PORT' : '3306',
     }
 }
