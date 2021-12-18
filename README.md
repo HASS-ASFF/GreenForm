@@ -1,5 +1,3 @@
 # GreenForm
 
-============================================
-= Project freelance using framework Django =
-============================================
+Web application using Django 
