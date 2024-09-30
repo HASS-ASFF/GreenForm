@@ -2,5 +2,4 @@
 
 Web application using Django 
 
-
-![image](https://github.com/user-attachments/assets/d22ed927-bcdb-4773-881e-0f6afdac70b5)
+GUIDE MANUEL ET TECHNIQUE DE L'APPLICATION : https://drive.google.com/drive/folders/1o8nxhAsTdITIg2CQj62vM7DWyZnsyA_d?usp=drive_link
