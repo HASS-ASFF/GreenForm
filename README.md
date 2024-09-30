@@ -2,4 +2,5 @@
 
 Web application using Django 
 
-PDF HERE : [Uploading doc-user-forma-green-final.pdf…]()
+
+![image](https://github.com/user-attachments/assets/d22ed927-bcdb-4773-881e-0f6afdac70b5)
