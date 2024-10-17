@@ -5,6 +5,7 @@ Application web pour la gestion des adhérants pour une association nommé Forma
  Technologies utilisées : 
  - Framework Django (Python)
  - Sass (css) et Javascript (avec la bibliothèque Jquery)
+ - Mysql (database)
 
 GUIDE MANUEL ET TECHNIQUE DE L'APPLICATION : https://drive.google.com/drive/folders/1o8nxhAsTdITIg2CQj62vM7DWyZnsyA_d?usp=drive_link
 
